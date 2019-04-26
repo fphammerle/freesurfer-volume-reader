@@ -5,7 +5,7 @@ setuptools.setup(
     use_scm_version=True,
     author='Fabian Peter Hammerle',
     author_email='fabian@hammerle.me',
-    url='https://github.com/fphammerle/freesurfer-volumes-reader',
+    url='https://github.com/fphammerle/freesurfer-volume-reader',
     # TODO add license
     keywords=[
         'brain',
