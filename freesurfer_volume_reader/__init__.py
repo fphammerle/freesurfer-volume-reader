@@ -57,7 +57,6 @@ def read_hippocampal_volume_file_dataframe(volume_file_path: str) -> pandas.Data
 
 
 def main():
-    # TODO add description
     argparser = argparse.ArgumentParser(
         description='Read hippocampal volumes computed by Freesurfer'
                     '\nhttps://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields')
@@ -66,8 +65,10 @@ def main():
                            help='default: %(default)s')
     argparser.add_argument('--output-format', choices=['csv'], default='csv',
                            help='default: %(default)s')
-    # TODO default to $SUBJECTS_DIR
-    argparser.add_argument('root_dir_path')
+    argparser.add_argument('root_dir_path',
+                           nargs='?' if 'SUBJECTS_DIR' in os.environ else 1,
+                           default=os.environ.get('SUBJECTS_DIR', None),
+                           help='default: $SUBJECTS_DIR (%(default)s)')
     args = argparser.parse_args()
     volume_file_paths = find_hippocampal_volume_files(
         root_dir_path=args.root_dir_path,

@@ -1,3 +1,16 @@
+## Usage
+
+```sh
+export SUBJECTS_DIR=/my/freesurfer/subjects
+freesurfer-volume-reader
+```
+
+or
+
+```sh
+freesurfer-volume-reader /my/freesurfer/subjects
+```
+
 ## Tests
 
 ```sh
