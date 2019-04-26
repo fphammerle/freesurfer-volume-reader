@@ -23,13 +23,14 @@ def find_hippocampal_volume_files(root_dir_path: str,
             yield os.path.join(dirpath, filename)
 
 
-def read_hippocampal_volumes(volume_file_path: str) -> dict:
+def read_hippocampal_volumes_mm3(volume_file_path: str) -> dict:
     subfield_volumes = {}
     with open(volume_file_path, 'r') as volume_file:
         for line in volume_file.read().rstrip().split('\n'):
+            # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L8
             # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L1946
-            subfield_name, subfield_volume_str = line.split(' ')
-            subfield_volumes[subfield_name] = float(subfield_volume_str)
+            subfield_name, subfield_volume_mm3_str = line.split(' ')
+            subfield_volumes[subfield_name] = float(subfield_volume_mm3_str)
     return subfield_volumes
 
 
@@ -49,7 +50,7 @@ def parse_hippocampal_volume_file_path(volume_file_path: str) -> dict:
 
 def read_hippocampal_volume_file_dataframe(volume_file_path: str) -> pandas.DataFrame:
     volumes_frame = pandas.DataFrame(
-        read_hippocampal_volumes(volume_file_path).items(),
+        read_hippocampal_volumes_mm3(volume_file_path).items(),
         columns=['subfield', 'volume'])
     for key, value in parse_hippocampal_volume_file_path(volume_file_path).items():
         volumes_frame[key] = value

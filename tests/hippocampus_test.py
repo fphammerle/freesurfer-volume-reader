@@ -60,14 +60,14 @@ def test_find_hippocampal_volume_files_pattern(root_dir_path, filename_pattern,
       'HATA': 91.234567,
       'Whole_hippocampus': 1234.567899}),
 ])
-def test_read_hippocampal_volumes(volume_file_path, expected_volumes):
-    assert expected_volumes == freesurfer_volume_reader.read_hippocampal_volumes(
+def test_read_hippocampal_volumes_mm3(volume_file_path, expected_volumes):
+    assert expected_volumes == freesurfer_volume_reader.read_hippocampal_volumes_mm3(
         volume_file_path)
 
 
-def test_read_hippocampal_volumes_not_found():
+def test_read_hippocampal_volumes_mm3_not_found():
     with pytest.raises(FileNotFoundError):
-        freesurfer_volume_reader.read_hippocampal_volumes(
+        freesurfer_volume_reader.read_hippocampal_volumes_mm3(
             os.path.join(SUBJECTS_DIR, 'non-existing', 'lh.hippoSfVolumes-T1.v10.txt'))
 
 
