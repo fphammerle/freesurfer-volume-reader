@@ -1,0 +1,17 @@
+language: python
+
+python:
+- 3.4
+- 3.5
+- 3.6
+- 3.6-dev
+- 3.7
+- 3.7-dev
+
+install:
+- pip install pipenv
+- pipenv sync --dev
+
+script:
+- pipenv run pylint freesurfer_volume_reader
+- pipenv run pytest
