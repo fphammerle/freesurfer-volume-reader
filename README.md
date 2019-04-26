@@ -1,5 +1,7 @@
 # freesurfer-volume-reader
 
+[![Build Status](https://travis-ci.org/fphammerle/freesurfer-volume-reader.svg?branch=master)](https://travis-ci.org/fphammerle/freesurfer-volume-reader)
+
 Python script & library to
 read hippocampal subfield volumes computed by Freesurfer
 
