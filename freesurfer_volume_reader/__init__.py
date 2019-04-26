@@ -58,7 +58,7 @@ def read_hippocampal_volume_file_dataframe(volume_file_path: str) -> pandas.Data
 
 def main():
     argparser = argparse.ArgumentParser(
-        description='Read hippocampal volumes computed by Freesurfer'
+        description='Read hippocampal subfield volumes computed by Freesurfer'
                     '\nhttps://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields')
     argparser.add_argument('--filename-regex', dest='filename_pattern',
                            default=DEFAULT_HIPPOCAMPAL_VOLUME_FIND_FILENAME_PATTERN,

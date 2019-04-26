@@ -1,3 +1,10 @@
+# freesurfer-volume-reader
+
+Python script & library to
+read hippocampal subfield volumes computed by Freesurfer
+
+https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
+
 ## Install
 
 ```sh
