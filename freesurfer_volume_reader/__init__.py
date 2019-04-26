@@ -15,7 +15,9 @@ DEFAULT_HIPPOCAMPAL_VOLUME_FIND_FILENAME_PATTERN = re.sub(r'\?P<.+?>', '',
 VOLUME_FILENAME_HEMISPHERE_MAP = {'l': 'left', 'r': 'right'}
 
 
-def find_hippocampal_volume_files(root_dir_path: str, filename_regex: typing.Pattern = HIPPOCAMPAL_VOLUME_FILENAME_REGEX) -> typing.Iterator[str]:
+def find_hippocampal_volume_files(root_dir_path: str,
+                                  filename_regex: typing.Pattern = HIPPOCAMPAL_VOLUME_FILENAME_REGEX
+                                  ) -> typing.Iterator[str]:
     for dirpath, _, filenames in os.walk(root_dir_path):
         for filename in filter(filename_regex.search, filenames):
             yield os.path.join(dirpath, filename)
@@ -56,8 +58,9 @@ def read_hippocampal_volume_file_dataframe(volume_file_path: str) -> pandas.Data
 
 def main():
     # TODO add description
-    argparser = argparse.ArgumentParser(description='Read hippocampal volumes computed by Freesurfer'
-                                        '\nhttps://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields')
+    argparser = argparse.ArgumentParser(
+        description='Read hippocampal volumes computed by Freesurfer'
+                    '\nhttps://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields')
     argparser.add_argument('--filename-regex', dest='filename_pattern',
                            default=DEFAULT_HIPPOCAMPAL_VOLUME_FIND_FILENAME_PATTERN,
                            help='default: %(default)s')
@@ -66,9 +69,11 @@ def main():
     # TODO default to $SUBJECTS_DIR
     argparser.add_argument('root_dir_path')
     args = argparser.parse_args()
+    volume_file_paths = find_hippocampal_volume_files(
+        root_dir_path=args.root_dir_path,
+        filename_regex=re.compile(args.filename_pattern))
     volume_frames = []
-    for volume_file_path in find_hippocampal_volume_files(root_dir_path=args.root_dir_path,
-                                                          filename_regex=re.compile(args.filename_pattern)):
+    for volume_file_path in volume_file_paths:
         volume_frame = read_hippocampal_volume_file_dataframe(volume_file_path)
         volume_frame['source_path'] = os.path.abspath(volume_file_path)
         volume_frames.append(volume_frame)
