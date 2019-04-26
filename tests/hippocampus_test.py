@@ -3,6 +3,7 @@ import os
 import re
 import unittest.mock
 
+import pandas
 import pandas.util.testing
 import pytest
 
@@ -132,6 +133,20 @@ def test_read_hippocampal_volume_file_dataframe(volume_file_path, expected_dataf
     )
 
 
+def assert_volume_frames_equal(left: pandas.DataFrame, right: pandas.DataFrame):
+    sort_by = ['volume', 'analysis_id']
+    left.sort_values(sort_by, inplace=True)
+    right.sort_values(sort_by, inplace=True)
+    left.reset_index(inplace=True, drop=True)
+    right.reset_index(inplace=True, drop=True)
+    pandas.util.testing.assert_frame_equal(
+        left=left,
+        right=right,
+        # ignore the order of index & columns
+        check_like=True,
+    )
+
+
 @pytest.mark.parametrize(('root_dir_path', 'expected_csv_path'), [
     (os.path.join(SUBJECTS_DIR, 'bert'),
      os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
@@ -140,7 +155,7 @@ def test_main_root_dir_param(capsys, root_dir_path, expected_csv_path):
     with unittest.mock.patch('sys.argv', ['', root_dir_path]):
         freesurfer_volume_reader.main()
     out, _ = capsys.readouterr()
-    pandas.util.testing.assert_frame_equal(
+    assert_volume_frames_equal(
         left=pandas.read_csv(expected_csv_path),
         right=pandas.read_csv(io.StringIO(out)).drop(columns=['source_path']),
     )
@@ -155,7 +170,7 @@ def test_main_root_dir_env(capsys, root_dir_path, expected_csv_path):
     with unittest.mock.patch('sys.argv', ['']):
         freesurfer_volume_reader.main()
     out, _ = capsys.readouterr()
-    pandas.util.testing.assert_frame_equal(
+    assert_volume_frames_equal(
         left=pandas.read_csv(expected_csv_path),
         right=pandas.read_csv(io.StringIO(out)).drop(columns=['source_path']),
     )
