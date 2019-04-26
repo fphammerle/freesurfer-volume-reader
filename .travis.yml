@@ -8,6 +8,9 @@ python:
 - 3.7
 - 3.7-dev
 
+# required for python >= 3.7
+dist: xenial
+
 install:
 - pip install pipenv
 - pipenv sync --dev
