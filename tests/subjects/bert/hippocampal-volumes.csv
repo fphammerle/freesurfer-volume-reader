@@ -1,4 +1,4 @@
-subfield,volume,subject,hemisphere,T1_input,analysis_id
+subfield,volume_mm^3,subject,hemisphere,T1_input,analysis_id
 Hippocampal_tail,123.456789,bert,left,True,
 subiculum,234.567891,bert,left,True,
 CA1,34.567891,bert,left,True,

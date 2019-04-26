@@ -33,7 +33,7 @@ def main():
     for hemisphere in ['left', 'right']:
         pyplot.ylim(0, 750)
         ax = seaborn.barplot(data=volume_frame_subfields[volume_frame_subfields['hemisphere'] == hemisphere],
-                             x='subfield', y='volume',
+                             x='subfield', y='volume_mm^3',
                              hue='subfield_segmentation_mode')
         ax.set_title('Hippocampal Subfield Volumes of Subject {}'.format(args.subject)
                      + '\n{} Hemisphere'.format(str.capitalize(hemisphere)))
@@ -41,7 +41,7 @@ def main():
         pyplot.clf()
     seaborn.set(font_scale=0.4)
     ax = seaborn.barplot(data=volume_frame[volume_frame['subfield'] == 'Whole_hippocampus'],
-                         x='hemisphere', y='volume',
+                         x='hemisphere', y='volume_mm^3',
                          hue='subfield_segmentation_mode')
     ax.set_title('Hippocampal Volume of Subject {}'.format(args.subject))
     pyplot.savefig('hippocampal_volume_{}.png'.format(args.subject))

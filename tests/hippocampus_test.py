@@ -116,9 +116,9 @@ def test_parse_hippocampal_volume_file_path_invalid(volume_file_path):
          'subfield': ['Hippocampal_tail', 'subiculum', 'CA1', 'hippocampal-fissure',
                       'presubiculum', 'parasubiculum', 'molecular_layer_HP', 'GC-ML-DG',
                       'CA3', 'CA4', 'fimbria', 'HATA', 'Whole_hippocampus'],
-         'volume': [173.456789, 734.567891, 34.567891, 345.678917, 456.789173, 45.678917,
-                    56.789173, 567.891734, 678.917345, 789.173456, 89.173456, 91.734567,
-                    1734.567899],
+         'volume_mm^3': [173.456789, 734.567891, 34.567891, 345.678917, 456.789173, 45.678917,
+                         56.789173, 567.891734, 678.917345, 789.173456, 89.173456, 91.734567,
+                         1734.567899],
          'subject': 'alice',
          'hemisphere': 'left',
          'T1_input': True,
@@ -134,7 +134,7 @@ def test_read_hippocampal_volume_file_dataframe(volume_file_path, expected_dataf
 
 
 def assert_volume_frames_equal(left: pandas.DataFrame, right: pandas.DataFrame):
-    sort_by = ['volume', 'analysis_id']
+    sort_by = ['volume_mm^3', 'analysis_id']
     left.sort_values(sort_by, inplace=True)
     right.sort_values(sort_by, inplace=True)
     left.reset_index(inplace=True, drop=True)

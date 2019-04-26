@@ -51,7 +51,7 @@ def parse_hippocampal_volume_file_path(volume_file_path: str) -> dict:
 def read_hippocampal_volume_file_dataframe(volume_file_path: str) -> pandas.DataFrame:
     volumes_frame = pandas.DataFrame(
         read_hippocampal_volumes_mm3(volume_file_path).items(),
-        columns=['subfield', 'volume'])
+        columns=['subfield', 'volume_mm^3'])
     for key, value in parse_hippocampal_volume_file_path(volume_file_path).items():
         volumes_frame[key] = value
     # volumes_frame['hemisphere'] = volumes_frame['hemisphere'].astype('category')
