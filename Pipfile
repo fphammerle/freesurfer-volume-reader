@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+freesurfer-volume-reader = {editable = true, path = "."}
+
+[dev-packages]
+pytest = "*"
+pylint = ">=2.3.0"
+
+[requires]
+python_version = "3"
