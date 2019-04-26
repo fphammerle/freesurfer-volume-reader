@@ -27,6 +27,7 @@ def read_hippocampal_volumes(volume_file_path: str) -> dict:
     subfield_volumes = {}
     with open(volume_file_path, 'r') as volume_file:
         for line in volume_file.read().rstrip().split('\n'):
+            # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L1946
             subfield_name, subfield_volume_str = line.split(' ')
             subfield_volumes[subfield_name] = float(subfield_volume_str)
     return subfield_volumes
