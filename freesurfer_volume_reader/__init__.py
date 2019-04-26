@@ -65,13 +65,14 @@ def main():
                            help='default: %(default)s')
     argparser.add_argument('--output-format', choices=['csv'], default='csv',
                            help='default: %(default)s')
+    subjects_dir_path = os.environ.get('SUBJECTS_DIR', None)
     argparser.add_argument('root_dir_path',
-                           nargs='?' if 'SUBJECTS_DIR' in os.environ else 1,
-                           default=os.environ.get('SUBJECTS_DIR', None),
-                           help='default: $SUBJECTS_DIR (%(default)s)')
+                           nargs='?' if subjects_dir_path  else 1,
+                           default=[subjects_dir_path],
+                           help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
     args = argparser.parse_args()
     volume_file_paths = find_hippocampal_volume_files(
-        root_dir_path=args.root_dir_path,
+        root_dir_path=args.root_dir_path[0],
         filename_regex=re.compile(args.filename_pattern))
     volume_frames = []
     for volume_file_path in volume_file_paths:
