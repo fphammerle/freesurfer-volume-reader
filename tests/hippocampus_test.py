@@ -126,7 +126,7 @@ def test_parse_hippocampal_volume_file_path_invalid(volume_file_path):
      })),
 ])
 def test_read_hippocampal_volume_file_dataframe(volume_file_path, expected_dataframe):
-    pandas.util.testing.assert_frame_equal(
+    assert_volume_frames_equal(
         left=expected_dataframe,
         right=freesurfer_volume_reader.read_hippocampal_volume_file_dataframe(
             volume_file_path=volume_file_path),
