@@ -1,6 +1,7 @@
 language: python
 
 python:
+- 3.4
 - 3.5
 - 3.6
 - 3.6-dev
@@ -11,7 +12,8 @@ python:
 dist: xenial
 
 install:
-- pip install pipenv
+# https://github.com/pypa/pipenv/issues/2924#issuecomment-429573525
+- pip install --upgrade pipenv>=2018.10.9
 - pipenv sync --dev
 - pipenv graph
 
