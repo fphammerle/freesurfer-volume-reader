@@ -1,0 +1,15 @@
+subfield,volume_mm^3,subject,hemisphere,T1_input,analysis_id
+Hippocampal_tail,173.456789,alice,left,True,
+subiculum,734.567891,alice,left,True,
+CA1,34.567891,alice,left,True,
+hippocampal-fissure,345.678917,alice,left,True,
+presubiculum,456.789173,alice,left,True,
+parasubiculum,45.678917,alice,left,True,
+molecular_layer_HP,56.789173,alice,left,True,
+GC-ML-DG,567.891734,alice,left,True,
+CA3,678.917345,alice,left,True,
+CA4,789.173456,alice,left,True,
+fimbria,89.173456,alice,left,True,
+HATA,91.734567,alice,left,True,
+Whole_hippocampus,1734.567899,alice,left,True,
+
