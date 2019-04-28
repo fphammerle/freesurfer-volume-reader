@@ -10,9 +10,20 @@ python:
 # required for python >= 3.7
 dist: xenial
 
+env:
+# https://pypi.org/project/pandas/#history
+- PANDAS_VERSION=
+- PANDAS_VERSION=0.24.*
+- PANDAS_VERSION=0.23.*
+- PANDAS_VERSION=0.22.*
+- PANDAS_VERSION=0.21.*
+
 install:
 - pip install pipenv
 - pipenv sync --dev
+- if [ ! -z "$PANDAS_VERSION" ]; then
+    pipenv install --selective-upgrade "pandas==$PANDAS_VERSION";
+  fi
 - pipenv graph
 
 script:
