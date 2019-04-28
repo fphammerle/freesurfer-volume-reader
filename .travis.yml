@@ -16,5 +16,5 @@ install:
 - pipenv graph
 
 script:
-- pipenv run pylint freesurfer_volume_reader
+- pipenv run pylint freesurfer_volume_reader tests/*
 - pipenv run pytest
