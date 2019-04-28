@@ -152,6 +152,8 @@ def assert_volume_frames_equal(left: pandas.DataFrame, right: pandas.DataFrame):
      os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
 ])
 def test_main_root_dir_param(capsys, root_dir_path, expected_csv_path):
+    if 'SUBJECTS_DIR' in os.environ:
+        del os.environ['SUBJECTS_DIR']
     with unittest.mock.patch('sys.argv', ['', root_dir_path]):
         freesurfer_volume_reader.main()
     out, _ = capsys.readouterr()
@@ -168,6 +170,23 @@ def test_main_root_dir_param(capsys, root_dir_path, expected_csv_path):
 def test_main_root_dir_env(capsys, root_dir_path, expected_csv_path):
     os.environ['SUBJECTS_DIR'] = root_dir_path
     with unittest.mock.patch('sys.argv', ['']):
+        freesurfer_volume_reader.main()
+    out, _ = capsys.readouterr()
+    assert_volume_frames_equal(
+        left=pandas.read_csv(expected_csv_path),
+        right=pandas.read_csv(io.StringIO(out)).drop(columns=['source_path']),
+    )
+
+
+@pytest.mark.timeout(8)
+@pytest.mark.parametrize(('root_dir_path', 'subjects_dir', 'expected_csv_path'), [
+    (os.path.join(SUBJECTS_DIR, 'bert'),
+     os.path.join(SUBJECTS_DIR, 'alice'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
+])
+def test_main_root_dir_overwrite_env(capsys, root_dir_path, subjects_dir, expected_csv_path):
+    os.environ['SUBJECTS_DIR'] = subjects_dir
+    with unittest.mock.patch('sys.argv', ['', root_dir_path]):
         freesurfer_volume_reader.main()
     out, _ = capsys.readouterr()
     assert_volume_frames_equal(

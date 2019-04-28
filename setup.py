@@ -44,5 +44,6 @@ setuptools.setup(
     tests_require=[
         'pylint>=2.3.0',
         'pytest',
+        'pytest-timeout',
     ],
 )
