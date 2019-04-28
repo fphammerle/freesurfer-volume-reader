@@ -7,8 +7,9 @@ name = "pypi"
 freesurfer-volume-reader = {editable = true, path = "."}
 
 [dev-packages]
-pytest = "*"
 pylint = ">=2.3.0"
+pytest = "*"
+pytest-timeout = "*"
 
 [requires]
 python_version = "3"

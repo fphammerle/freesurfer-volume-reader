@@ -7,6 +7,7 @@ import seaborn
 from freesurfer_volume_reader import find_hippocampal_volume_files, \
                                      read_hippocampal_volume_file_dataframe
 
+
 def abbreviate_analysis_id(analysis_id):
     return analysis_id.split('_')[0] if analysis_id else None
 

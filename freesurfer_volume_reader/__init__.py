@@ -66,20 +66,21 @@ def read_hippocampal_volume_file_dataframe(volume_file_path: str) -> pandas.Data
 
 def main():
     argparser = argparse.ArgumentParser(description=__doc__)
-    argparser.add_argument('--filename-regex', dest='filename_pattern',
+    argparser.add_argument('--filename-regex', type=re.compile,
                            default=DEFAULT_HIPPOCAMPAL_VOLUME_FIND_FILENAME_PATTERN,
                            help='default: %(default)s')
     argparser.add_argument('--output-format', choices=['csv'], default='csv',
                            help='default: %(default)s')
     subjects_dir_path = os.environ.get('SUBJECTS_DIR', None)
-    argparser.add_argument('root_dir_path',
-                           nargs='?' if subjects_dir_path  else 1,
+    argparser.add_argument('root_dir_paths',
+                           metavar='ROOT_DIR',
+                           nargs='*' if subjects_dir_path else '+',
                            default=[subjects_dir_path],
                            help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
     args = argparser.parse_args()
-    volume_file_paths = find_hippocampal_volume_files(
-        root_dir_path=args.root_dir_path[0],
-        filename_regex=re.compile(args.filename_pattern))
+    volume_file_paths = [p for d in args.root_dir_paths
+                         for p in find_hippocampal_volume_files(
+                             root_dir_path=d, filename_regex=args.filename_regex)]
     volume_frames = []
     for volume_file_path in volume_file_paths:
         volume_frame = read_hippocampal_volume_file_dataframe(volume_file_path)

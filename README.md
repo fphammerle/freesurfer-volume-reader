@@ -25,6 +25,7 @@ or
 
 ```sh
 freesurfer-volume-reader /my/freesurfer/subjects
+freesurfer-volume-reader /my/freesurfer/subjects /other/freesurfer/subjects
 ```
 
 or
