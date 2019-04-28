@@ -18,6 +18,18 @@ env:
 - PANDAS_VERSION=0.22.*
 - PANDAS_VERSION=0.21.*
 
+# https://travis-ci.org/fphammerle/freesurfer-volume-reader/builds/525556257
+matrix:
+  exclude:
+  - python: 3.7
+    env: PANDAS_VERSION=0.21.*
+  - python: 3.7
+    env: PANDAS_VERSION=0.22.*
+  - python: 3.7-dev
+    env: PANDAS_VERSION=0.21.*
+  - python: 3.7-dev
+    env: PANDAS_VERSION=0.22.*
+
 install:
 - pip install pipenv
 - pipenv sync --dev
