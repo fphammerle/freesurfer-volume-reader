@@ -2,10 +2,14 @@ import setuptools
 
 import freesurfer_volume_reader
 
+
+LONG_DESCRIPTION = freesurfer_volume_reader.__doc__.strip()
+
 setuptools.setup(
     name='freesurfer-volume-reader',
     use_scm_version=True,
-    description=freesurfer_volume_reader.__doc__.strip(),
+    description=LONG_DESCRIPTION.split(sep='\n', maxsplit=1)[0],
+    long_description=LONG_DESCRIPTION,
     author='Fabian Peter Hammerle',
     author_email='fabian@hammerle.me',
     url='https://github.com/fphammerle/freesurfer-volume-reader',
