@@ -158,6 +158,7 @@ def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.D
     out, _ = capsys.readouterr()
     assert_volume_frames_equal(
         left=expected_frame,
+        # pandas.DataFrame.drop(columns=[...], ...) >= pandas0.21.0
         right=pandas.read_csv(io.StringIO(out)).drop(columns=['source_path']),
     )
 

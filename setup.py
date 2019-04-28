@@ -36,7 +36,8 @@ setuptools.setup(
         ],
     },
     install_requires=[
-        'pandas',
+        # pandas.DataFrame.drop(columns=[...], ...)
+        'pandas>=0.21.0',
     ],
     setup_requires=[
         'setuptools_scm',
