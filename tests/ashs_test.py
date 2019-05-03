@@ -4,6 +4,8 @@ import pytest
 
 from freesurfer_volume_reader.ashs import HippocampalSubfieldsVolumeFile
 
+from conftest import SUBJECTS_DIR
+
 
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
     ('ashs/final/bert_left_heur_volumes.txt',
@@ -43,3 +45,25 @@ def test_hippocampal_subfields_volume_file_init(volume_file_path, expected_attrs
 def test_hippocampal_subfields_volume_file_init_invalid(volume_file_path):
     with pytest.raises(Exception):
         HippocampalSubfieldsVolumeFile(path=volume_file_path)
+
+
+@pytest.mark.parametrize(('volume_file_path', 'expected_volumes'), [
+    (os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_nogray_volumes.txt'),
+     {'CA1': 678.901,
+      'CA2+3': 123.456,
+      'DG': 901.234,
+      'ERC': 678.901,
+      'PHC': 2345.876,
+      'PRC': 2345.678,
+      'SUB': 457.789}),
+])
+def test_hippocampal_subfields_volume_file_read_volumes_mm3(volume_file_path, expected_volumes):
+    volume_file = HippocampalSubfieldsVolumeFile(path=volume_file_path)
+    assert expected_volumes == volume_file.read_volumes_mm3()
+
+
+def test_hippocampal_subfields_volume_file_read_volumes_mm3_not_found():
+    volume_file = HippocampalSubfieldsVolumeFile(
+        path=os.path.join(SUBJECTS_DIR, 'nobert', 'final', 'bert_left_corr_nogray_volumes.txt'))
+    with pytest.raises(FileNotFoundError):
+        volume_file.read_volumes_mm3()

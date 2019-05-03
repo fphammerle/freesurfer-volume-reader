@@ -11,11 +11,16 @@ https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
 """
 
 import abc
+import typing
 
-# pylint: disable=too-few-public-methods
+
 class VolumeFile(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
     def absolute_path(self):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def read_volumes_mm3(self) -> typing.Dict[str, float]:
         raise NotImplementedError()
