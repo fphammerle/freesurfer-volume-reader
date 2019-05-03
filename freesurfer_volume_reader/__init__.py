@@ -18,22 +18,11 @@ def remove_group_names_from_regex(regex_pattern: str) -> str:
     return re.sub(r'\?P<.+?>', '', regex_pattern)
 
 
-def read_hippocampal_volumes_mm3(volume_file_path: str) -> dict:
-    subfield_volumes = {}
-    with open(volume_file_path, 'r') as volume_file:
-        for line in volume_file.read().rstrip().split('\n'):
-            # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L8
-            # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L1946
-            subfield_name, subfield_volume_mm3_str = line.split(' ')
-            subfield_volumes[subfield_name] = float(subfield_volume_mm3_str)
-    return subfield_volumes
-
-
 def read_hippocampal_volume_file_dataframe(volume_file: HippocampalSubfieldsVolumeFile,
                                            ) -> pandas.DataFrame:
     volumes_frame = pandas.DataFrame([
         {'subfield': s, 'volume_mm^3': v}
-        for s, v in read_hippocampal_volumes_mm3(volume_file.absolute_path).items()
+        for s, v in volume_file.read_volumes_mm3().items()
     ])
     volumes_frame['subject'] = volume_file.subject
     volumes_frame['hemisphere'] = volume_file.hemisphere

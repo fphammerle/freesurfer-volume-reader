@@ -23,33 +23,6 @@ def test_remove_group_names_from_regex(source_pattern, expected_pattern):
     )
 
 
-@pytest.mark.parametrize(('volume_file_path', 'expected_volumes'), [
-    (os.path.join(SUBJECTS_DIR, 'bert/mri/lh.hippoSfVolumes-T1.v10.txt'),
-     {'Hippocampal_tail': 123.456789,
-      'subiculum': 234.567891,
-      'CA1': 34.567891,
-      'hippocampal-fissure': 345.678912,
-      'presubiculum': 456.789123,
-      'parasubiculum': 45.678912,
-      'molecular_layer_HP': 56.789123,
-      'GC-ML-DG': 567.891234,
-      'CA3': 678.912345,
-      'CA4': 789.123456,
-      'fimbria': 89.123456,
-      'HATA': 91.234567,
-      'Whole_hippocampus': 1234.567899}),
-])
-def test_read_hippocampal_volumes_mm3(volume_file_path, expected_volumes):
-    assert expected_volumes == freesurfer_volume_reader.read_hippocampal_volumes_mm3(
-        volume_file_path)
-
-
-def test_read_hippocampal_volumes_mm3_not_found():
-    with pytest.raises(FileNotFoundError):
-        freesurfer_volume_reader.read_hippocampal_volumes_mm3(
-            os.path.join(SUBJECTS_DIR, 'non-existing', 'lh.hippoSfVolumes-T1.v10.txt'))
-
-
 @pytest.mark.parametrize(('volume_file_path', 'expected_dataframe'), [
     (os.path.join(SUBJECTS_DIR, 'alice', 'mri', 'lh.hippoSfVolumes-T1.v10.txt'),
      pandas.DataFrame({

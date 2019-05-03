@@ -48,6 +48,34 @@ def test_hippocampal_subfields_volume_file_init_invalid(volume_file_path):
         HippocampalSubfieldsVolumeFile(path=volume_file_path)
 
 
+@pytest.mark.parametrize(('volume_file_path', 'expected_volumes'), [
+    (os.path.join(SUBJECTS_DIR, 'bert/mri/lh.hippoSfVolumes-T1.v10.txt'),
+     {'Hippocampal_tail': 123.456789,
+      'subiculum': 234.567891,
+      'CA1': 34.567891,
+      'hippocampal-fissure': 345.678912,
+      'presubiculum': 456.789123,
+      'parasubiculum': 45.678912,
+      'molecular_layer_HP': 56.789123,
+      'GC-ML-DG': 567.891234,
+      'CA3': 678.912345,
+      'CA4': 789.123456,
+      'fimbria': 89.123456,
+      'HATA': 91.234567,
+      'Whole_hippocampus': 1234.567899}),
+])
+def test_hippocampal_subfields_volume_file_read_volumes_mm3(volume_file_path, expected_volumes):
+    volume_file = HippocampalSubfieldsVolumeFile(path=volume_file_path)
+    assert expected_volumes == volume_file.read_volumes_mm3()
+
+
+def test_hippocampal_subfields_volume_file_read_volumes_mm3_not_found():
+    volume_file = HippocampalSubfieldsVolumeFile(
+        path=os.path.join(SUBJECTS_DIR, 'non-existing', 'lh.hippoSfVolumes-T1.v10.txt'))
+    with pytest.raises(FileNotFoundError):
+        volume_file.read_volumes_mm3()
+
+
 @pytest.mark.parametrize(('root_dir_path', 'expected_file_paths'), [
     (SUBJECTS_DIR,
      {os.path.join(SUBJECTS_DIR, 'alice', 'mri', 'lh.hippoSfVolumes-T1.v10.txt'),
