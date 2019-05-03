@@ -12,8 +12,10 @@ https://sites.google.com/site/hipposubfields/home
 import os
 import re
 
+import freesurfer_volume_reader
+
 # pylint: disable=too-few-public-methods
-class HippocampalSubfieldsVolumeFile:
+class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.VolumeFile):
 
     # https://sites.google.com/site/hipposubfields/tutorial#TOC-Viewing-ASHS-Segmentation-Results
     FILENAME_PATTERN = r'^(?P<s>\w+)_(?P<h>left|right)' \

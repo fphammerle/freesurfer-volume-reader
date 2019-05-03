@@ -9,3 +9,13 @@ https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
 >>>     print(volume_file.read_volumes_mm3())
 >>>     print(volume_file.read_volumes_dataframe())
 """
+
+import abc
+
+# pylint: disable=too-few-public-methods
+class VolumeFile(metaclass=abc.ABCMeta):
+
+    @property
+    @abc.abstractmethod
+    def absolute_path(self):
+        raise NotImplementedError()
