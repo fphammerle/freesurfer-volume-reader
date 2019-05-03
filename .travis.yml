@@ -41,3 +41,5 @@ install:
 script:
 - pipenv run pylint freesurfer_volume_reader tests/*
 - pipenv run pytest
+- cd examples
+- pipenv run pylint *.py
