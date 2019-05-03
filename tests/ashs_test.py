@@ -1,11 +1,12 @@
 import os
 import re
 
+import pandas
 import pytest
 
 from freesurfer_volume_reader.ashs import HippocampalSubfieldsVolumeFile
 
-from conftest import SUBJECTS_DIR
+from conftest import SUBJECTS_DIR, assert_volume_frames_equal
 
 
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
@@ -68,6 +69,30 @@ def test_hippocampal_subfields_volume_file_read_volumes_mm3_not_found():
         path=os.path.join(SUBJECTS_DIR, 'nobert', 'final', 'bert_left_corr_nogray_volumes.txt'))
     with pytest.raises(FileNotFoundError):
         volume_file.read_volumes_mm3()
+
+
+@pytest.mark.parametrize(('volume_file_path', 'expected_dataframe'), [
+    (os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_heur_volumes.txt'),
+     pandas.DataFrame({
+         'subfield': ['CA1', 'CA2+3', 'DG', 'ERC', 'PHC', 'PRC', 'SUB'],
+         'volume_mm^3': [679.904, 124.459, 902.237, 679.904, 2346.879, 2346.671, 458.782],
+         'subject': 'alice',
+         'hemisphere': 'left',
+         'correction': None,
+     })),
+])
+def test_hippocampal_subfields_volume_file_read_volumes_dataframe(
+        volume_file_path: str, expected_dataframe: pandas.DataFrame):
+    volume_file = HippocampalSubfieldsVolumeFile(path=volume_file_path)
+    assert_volume_frames_equal(left=expected_dataframe,
+                               right=volume_file.read_volumes_dataframe())
+
+
+def test_hippocampal_subfields_volume_file_read_volumes_dataframe_not_found():
+    volume_file = HippocampalSubfieldsVolumeFile(
+        path=os.path.join(SUBJECTS_DIR, 'nobert', 'final', 'bert_left_corr_nogray_volumes.txt'))
+    with pytest.raises(FileNotFoundError):
+        volume_file.read_volumes_dataframe()
 
 
 @pytest.mark.parametrize(('root_dir_path', 'expected_file_paths'), [

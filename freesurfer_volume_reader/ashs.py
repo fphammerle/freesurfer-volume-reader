@@ -8,11 +8,14 @@ https://sites.google.com/site/hipposubfields/home
 >>> for volume_file in HippocampalSubfieldsVolumeFile('/my/ashs/subjects'):
 >>>     print(volume_file.subject, volume_file.hemisphere, volume_file.correction)
 >>>     print(volume_file.read_volumes_mm3())
+>>>     print(volume_file.read_volumes_dataframe())
 """
 
 import os
 import re
 import typing
+
+import pandas
 
 import freesurfer_volume_reader
 
@@ -50,3 +53,13 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.VolumeFile):
                 assert int(slices_number_str) >= 0
                 subfield_volumes[subfield_name] = float(volume_mm3_str)
         return subfield_volumes
+
+    def read_volumes_dataframe(self) -> pandas.DataFrame:
+        volumes_frame = pandas.DataFrame([
+            {'subfield': s, 'volume_mm^3': v}
+            for s, v in self.read_volumes_mm3().items()
+        ])
+        volumes_frame['subject'] = self.subject
+        volumes_frame['hemisphere'] = self.hemisphere
+        volumes_frame['correction'] = self.correction
+        return volumes_frame

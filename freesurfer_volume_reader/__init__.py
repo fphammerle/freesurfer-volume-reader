@@ -14,6 +14,8 @@ import abc
 import os
 import typing
 
+import pandas
+
 
 class VolumeFile(metaclass=abc.ABCMeta):
 
@@ -26,6 +28,10 @@ class VolumeFile(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def read_volumes_mm3(self) -> typing.Dict[str, float]:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def read_volumes_dataframe(self) -> pandas.DataFrame:
         raise NotImplementedError()
 
     @classmethod
