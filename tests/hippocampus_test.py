@@ -10,7 +10,7 @@ import pytest
 import freesurfer_volume_reader
 import freesurfer_volume_reader.freesurfer
 
-from conftest import SUBJECTS_DIR
+from conftest import SUBJECTS_DIR, assert_volume_frames_equal
 
 
 @pytest.mark.parametrize(('source_pattern', 'expected_pattern'), [
@@ -23,8 +23,7 @@ def test_remove_group_names_from_regex(source_pattern, expected_pattern):
     )
 
 
-def assert_main_volume_frame_equals(capsys, assert_volume_frames_equal,
-                                    argv: list, expected_frame: pandas.DataFrame,
+def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.DataFrame,
                                     subjects_dir: typing.Optional[str] = None):
     if subjects_dir:
         os.environ['SUBJECTS_DIR'] = subjects_dir
@@ -49,13 +48,11 @@ def assert_main_volume_frame_equals(capsys, assert_volume_frames_equal,
       os.path.join(SUBJECTS_DIR, 'bert')],
      os.path.join(SUBJECTS_DIR, 'all-hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_param(capsys, assert_volume_frames_equal,
-                             root_dir_paths: list, expected_csv_path):
+def test_main_root_dir_param(capsys, root_dir_paths: list, expected_csv_path):
     assert_main_volume_frame_equals(
         argv=root_dir_paths,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
-        assert_volume_frames_equal=assert_volume_frames_equal,
     )
 
 
@@ -63,14 +60,12 @@ def test_main_root_dir_param(capsys, assert_volume_frames_equal,
     (os.path.join(SUBJECTS_DIR, 'bert'),
      os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_env(capsys, assert_volume_frames_equal,
-                           root_dir_path, expected_csv_path):
+def test_main_root_dir_env(capsys, root_dir_path, expected_csv_path):
     assert_main_volume_frame_equals(
         argv=[],
         subjects_dir=root_dir_path,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
-        assert_volume_frames_equal=assert_volume_frames_equal,
     )
 
 
@@ -83,18 +78,16 @@ def test_main_root_dir_env(capsys, assert_volume_frames_equal,
      os.path.abspath(os.sep),
      os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_overwrite_env(capsys, assert_volume_frames_equal,
-                                     root_dir_path, subjects_dir, expected_csv_path):
+def test_main_root_dir_overwrite_env(capsys, root_dir_path, subjects_dir, expected_csv_path):
     assert_main_volume_frame_equals(
         argv=[root_dir_path],
         subjects_dir=subjects_dir,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
-        assert_volume_frames_equal=assert_volume_frames_equal,
     )
 
 
-def test_main_root_dir_filename_regex(capsys, assert_volume_frames_equal):
+def test_main_root_dir_filename_regex(capsys):
     expected_volume_frame = pandas.read_csv(
         os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv'))
     assert_main_volume_frame_equals(
@@ -102,5 +95,4 @@ def test_main_root_dir_filename_regex(capsys, assert_volume_frames_equal):
               os.path.join(SUBJECTS_DIR, 'bert')],
         expected_frame=expected_volume_frame[expected_volume_frame['analysis_id'] == 'T2'].copy(),
         capsys=capsys,
-        assert_volume_frames_equal=assert_volume_frames_equal,
     )

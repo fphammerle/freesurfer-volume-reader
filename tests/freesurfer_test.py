@@ -1,13 +1,12 @@
 import os
 import re
-import typing
 
 import pandas
 import pytest
 
 from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
 
-from conftest import SUBJECTS_DIR
+from conftest import SUBJECTS_DIR, assert_volume_frames_equal
 
 
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
@@ -94,7 +93,6 @@ def test_hippocampal_subfields_volume_file_read_volumes_mm3_not_found():
      })),
 ])
 def test_hippocampal_subfields_volume_file_read_volumes_dataframe(
-        assert_volume_frames_equal: typing.Callable,
         volume_file_path: str, expected_dataframe: pandas.DataFrame):
     assert_volume_frames_equal(
         left=expected_dataframe,
