@@ -36,7 +36,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'freesurfer-volume-reader = freesurfer_volume_reader:main',
+            'freesurfer-volume-reader = freesurfer_volume_reader.__main__:main',
         ],
     },
     install_requires=[
