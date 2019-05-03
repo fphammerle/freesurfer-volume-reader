@@ -11,7 +11,7 @@ import typing
 
 import pandas
 
-from freesurfer_volume_reader.freesurfer import FreesurferHippocampalVolumeFile
+from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
 
 VOLUME_FILENAME_HEMISPHERE_MAP = {'l': 'left', 'r': 'right'}
 
@@ -33,7 +33,7 @@ def read_hippocampal_volumes_mm3(volume_file_path: str) -> dict:
 
 def parse_hippocampal_volume_file_path(volume_file_path: str) -> dict:
     subject_dir_path = os.path.dirname(os.path.dirname(os.path.abspath(volume_file_path)))
-    filename_match = FreesurferHippocampalVolumeFile.FILENAME_REGEX.match(
+    filename_match = HippocampalSubfieldsVolumeFile.FILENAME_REGEX.match(
         os.path.basename(volume_file_path))
     assert filename_match, volume_file_path
     filename_groups = filename_match.groupdict()
@@ -61,7 +61,7 @@ def main():
     argparser = argparse.ArgumentParser(description=__doc__)
     argparser.add_argument('--filename-regex', type=re.compile,
                            default=remove_group_names_from_regex(
-                               FreesurferHippocampalVolumeFile.FILENAME_PATTERN),
+                               HippocampalSubfieldsVolumeFile.FILENAME_PATTERN),
                            help='default: %(default)s')
     argparser.add_argument('--output-format', choices=['csv'], default='csv',
                            help='default: %(default)s')
@@ -73,7 +73,7 @@ def main():
                            help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
     args = argparser.parse_args()
     volume_file_paths = [p for d in args.root_dir_paths
-                         for p in FreesurferHippocampalVolumeFile.find(
+                         for p in HippocampalSubfieldsVolumeFile.find(
                              root_dir_path=d, filename_regex=args.filename_regex)]
     volume_frames = []
     for volume_file_path in volume_file_paths:

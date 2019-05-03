@@ -4,7 +4,7 @@ import typing
 
 
 # pylint: disable=too-few-public-methods
-class FreesurferHippocampalVolumeFile:
+class HippocampalSubfieldsVolumeFile:
 
     # https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
     FILENAME_PATTERN = r'^(?P<h>[lr])h\.hippoSfVolumes' \

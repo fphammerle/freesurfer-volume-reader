@@ -3,7 +3,7 @@ import re
 
 import pytest
 
-from freesurfer_volume_reader.freesurfer import FreesurferHippocampalVolumeFile
+from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
 
 SUBJECTS_DIR = os.path.join(os.path.dirname(__file__), 'subjects')
 
@@ -22,7 +22,7 @@ SUBJECTS_DIR = os.path.join(os.path.dirname(__file__), 'subjects')
 ])
 def test_find_hippocampal_volume_files(root_dir_path, expected_file_paths):
     assert expected_file_paths == set(
-        FreesurferHippocampalVolumeFile.find(root_dir_path=root_dir_path))
+        HippocampalSubfieldsVolumeFile.find(root_dir_path=root_dir_path))
 
 
 @pytest.mark.parametrize(('root_dir_path', 'filename_pattern', 'expected_file_paths'), [
@@ -36,5 +36,5 @@ def test_find_hippocampal_volume_files(root_dir_path, expected_file_paths):
 ])
 def test_find_hippocampal_volume_files_pattern(root_dir_path, filename_pattern,
                                                expected_file_paths):
-    assert expected_file_paths == set(FreesurferHippocampalVolumeFile.find(
+    assert expected_file_paths == set(HippocampalSubfieldsVolumeFile.find(
         root_dir_path=root_dir_path, filename_regex=re.compile(filename_pattern)))
