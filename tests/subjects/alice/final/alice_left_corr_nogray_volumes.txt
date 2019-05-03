@@ -1,0 +1,7 @@
+alice left CA1 26 679.903
+alice left CA2+3 26 124.458
+alice left DG 25 902.236
+alice left ERC 18 679.903
+alice left PHC 16 2346.878
+alice left PRC 26 2346.670
+alice left SUB 26 458.781

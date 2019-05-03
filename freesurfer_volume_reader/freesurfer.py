@@ -65,10 +65,3 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.VolumeFile):
         volumes_frame['T1_input'] = self.t1_input
         volumes_frame['analysis_id'] = self.analysis_id
         return volumes_frame
-
-    @classmethod
-    def find(cls, root_dir_path: str,
-             filename_regex: typing.Pattern = FILENAME_REGEX) -> typing.Iterator[str]:
-        for dirpath, _, filenames in os.walk(root_dir_path):
-            for filename in filter(filename_regex.search, filenames):
-                yield cls(path=os.path.join(dirpath, filename))

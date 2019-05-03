@@ -1,4 +1,5 @@
 import os
+import re
 
 import pytest
 
@@ -67,3 +68,40 @@ def test_hippocampal_subfields_volume_file_read_volumes_mm3_not_found():
         path=os.path.join(SUBJECTS_DIR, 'nobert', 'final', 'bert_left_corr_nogray_volumes.txt'))
     with pytest.raises(FileNotFoundError):
         volume_file.read_volumes_mm3()
+
+
+@pytest.mark.parametrize(('root_dir_path', 'expected_file_paths'), [
+    (os.path.join(SUBJECTS_DIR, 'alice'),
+     {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_heur_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_corr_nogray_volumes.txt')}),
+    (os.path.join(SUBJECTS_DIR, 'bert'),
+     {os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_nogray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_usegray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_right_corr_nogray_volumes.txt')}),
+    (SUBJECTS_DIR,
+     {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_heur_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_corr_nogray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_nogray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_usegray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_right_corr_nogray_volumes.txt')}),
+])
+def test_hippocampal_subfields_volume_file_find(root_dir_path, expected_file_paths):
+    volume_files_iterator = HippocampalSubfieldsVolumeFile.find(root_dir_path=root_dir_path)
+    assert expected_file_paths == set(f.absolute_path for f in volume_files_iterator)
+
+
+@pytest.mark.parametrize(('root_dir_path', 'filename_pattern', 'expected_file_paths'), [
+    (SUBJECTS_DIR,
+     r'^bert_right_',
+     {os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_right_corr_nogray_volumes.txt')}),
+    (SUBJECTS_DIR,
+     r'_nogray_volumes.txt$',
+     {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_corr_nogray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_nogray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_right_corr_nogray_volumes.txt')}),
+])
+def test_hippocampal_subfields_volume_file_find_pattern(root_dir_path, filename_pattern,
+                                                        expected_file_paths):
+    volume_files_iterator = HippocampalSubfieldsVolumeFile.find(
+        root_dir_path=root_dir_path, filename_regex=re.compile(filename_pattern))
+    assert expected_file_paths == set(f.absolute_path for f in volume_files_iterator)
