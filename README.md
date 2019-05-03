@@ -5,8 +5,8 @@
 Python script & library to
 read hippocampal subfield volumes computed by Freesurfer & ASHS
 
-Freesurfer https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
-ASHS https://sites.google.com/site/hipposubfields/home
+* Freesurfer https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
+* ASHS https://sites.google.com/site/hipposubfields/home
 
 ## Install
 
