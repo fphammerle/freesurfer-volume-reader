@@ -5,9 +5,9 @@ https://sites.google.com/site/hipposubfields/home
 
 >>> from freesurfer_volume_reader.ashs import HippocampalSubfieldsVolumeFile
 >>>
->>> volume_file = HippocampalSubfieldsVolumeFile('ashs/final/bert_right_corr_nogray_volumes.txt')
->>> print(volume_file.subject, volume_file.hemisphere, volume_file.correction)
->>> print(volume_file.read_volumes_mm3())
+>>> for volume_file in HippocampalSubfieldsVolumeFile('/my/ashs/subjects'):
+>>>     print(volume_file.subject, volume_file.hemisphere, volume_file.correction)
+>>>     print(volume_file.read_volumes_mm3())
 """
 
 import os
