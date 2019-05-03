@@ -2,6 +2,9 @@ import os
 import re
 import typing
 
+import pandas
+
+
 class HippocampalSubfieldsVolumeFile:
 
     # https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
@@ -36,6 +39,18 @@ class HippocampalSubfieldsVolumeFile:
                 subfield_name, subfield_volume_mm3_str = line.split(' ')
                 subfield_volumes[subfield_name] = float(subfield_volume_mm3_str)
         return subfield_volumes
+
+    def read_volumes_dataframe(self) -> pandas.DataFrame:
+        volumes_frame = pandas.DataFrame([
+            {'subfield': s, 'volume_mm^3': v}
+            for s, v in self.read_volumes_mm3().items()
+        ])
+        volumes_frame['subject'] = self.subject
+        volumes_frame['hemisphere'] = self.hemisphere
+        # volumes_frame['hemisphere'] = volumes_frame['hemisphere'].astype('category')
+        volumes_frame['T1_input'] = self.t1_input
+        volumes_frame['analysis_id'] = self.analysis_id
+        return volumes_frame
 
     @classmethod
     def find(cls, root_dir_path: str,

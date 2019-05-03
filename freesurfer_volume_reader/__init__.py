@@ -18,20 +18,6 @@ def remove_group_names_from_regex(regex_pattern: str) -> str:
     return re.sub(r'\?P<.+?>', '', regex_pattern)
 
 
-def read_hippocampal_volume_file_dataframe(volume_file: HippocampalSubfieldsVolumeFile,
-                                           ) -> pandas.DataFrame:
-    volumes_frame = pandas.DataFrame([
-        {'subfield': s, 'volume_mm^3': v}
-        for s, v in volume_file.read_volumes_mm3().items()
-    ])
-    volumes_frame['subject'] = volume_file.subject
-    volumes_frame['hemisphere'] = volume_file.hemisphere
-    # volumes_frame['hemisphere'] = volumes_frame['hemisphere'].astype('category')
-    volumes_frame['T1_input'] = volume_file.t1_input
-    volumes_frame['analysis_id'] = volume_file.analysis_id
-    return volumes_frame
-
-
 def main():
     argparser = argparse.ArgumentParser(description=__doc__)
     argparser.add_argument('--filename-regex', type=re.compile,
@@ -52,7 +38,7 @@ def main():
                         root_dir_path=d, filename_regex=args.filename_regex)]
     volume_frames = []
     for volume_file in volume_files:
-        volume_frame = read_hippocampal_volume_file_dataframe(volume_file)
+        volume_frame = volume_file.read_volumes_dataframe()
         volume_frame['source_path'] = volume_file.absolute_path
         volume_frames.append(volume_frame)
     united_volume_frame = pandas.concat(volume_frames, ignore_index=True)

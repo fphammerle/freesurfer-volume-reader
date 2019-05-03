@@ -23,46 +23,8 @@ def test_remove_group_names_from_regex(source_pattern, expected_pattern):
     )
 
 
-@pytest.mark.parametrize(('volume_file_path', 'expected_dataframe'), [
-    (os.path.join(SUBJECTS_DIR, 'alice', 'mri', 'lh.hippoSfVolumes-T1.v10.txt'),
-     pandas.DataFrame({
-         'subfield': ['Hippocampal_tail', 'subiculum', 'CA1', 'hippocampal-fissure',
-                      'presubiculum', 'parasubiculum', 'molecular_layer_HP', 'GC-ML-DG',
-                      'CA3', 'CA4', 'fimbria', 'HATA', 'Whole_hippocampus'],
-         'volume_mm^3': [173.456789, 734.567891, 34.567891, 345.678917, 456.789173, 45.678917,
-                         56.789173, 567.891734, 678.917345, 789.173456, 89.173456, 91.734567,
-                         1734.567899],
-         'subject': 'alice',
-         'hemisphere': 'left',
-         'T1_input': True,
-         'analysis_id': None,
-     })),
-])
-def test_read_hippocampal_volume_file_dataframe(volume_file_path, expected_dataframe):
-    volume_file = freesurfer_volume_reader.freesurfer.HippocampalSubfieldsVolumeFile(
-        path=volume_file_path)
-    assert_volume_frames_equal(
-        left=expected_dataframe,
-        right=freesurfer_volume_reader.read_hippocampal_volume_file_dataframe(
-            volume_file=volume_file),
-    )
-
-
-def assert_volume_frames_equal(left: pandas.DataFrame, right: pandas.DataFrame):
-    sort_by = ['volume_mm^3', 'analysis_id']
-    left.sort_values(sort_by, inplace=True)
-    right.sort_values(sort_by, inplace=True)
-    left.reset_index(inplace=True, drop=True)
-    right.reset_index(inplace=True, drop=True)
-    pandas.util.testing.assert_frame_equal(
-        left=left,
-        right=right,
-        # ignore the order of index & columns
-        check_like=True,
-    )
-
-
-def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.DataFrame,
+def assert_main_volume_frame_equals(capsys, assert_volume_frames_equal,
+                                    argv: list, expected_frame: pandas.DataFrame,
                                     subjects_dir: typing.Optional[str] = None):
     if subjects_dir:
         os.environ['SUBJECTS_DIR'] = subjects_dir
@@ -87,11 +49,13 @@ def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.D
       os.path.join(SUBJECTS_DIR, 'bert')],
      os.path.join(SUBJECTS_DIR, 'all-hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_param(capsys, root_dir_paths: list, expected_csv_path):
+def test_main_root_dir_param(capsys, assert_volume_frames_equal,
+                             root_dir_paths: list, expected_csv_path):
     assert_main_volume_frame_equals(
         argv=root_dir_paths,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
+        assert_volume_frames_equal=assert_volume_frames_equal,
     )
 
 
@@ -99,12 +63,14 @@ def test_main_root_dir_param(capsys, root_dir_paths: list, expected_csv_path):
     (os.path.join(SUBJECTS_DIR, 'bert'),
      os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_env(capsys, root_dir_path, expected_csv_path):
+def test_main_root_dir_env(capsys, assert_volume_frames_equal,
+                           root_dir_path, expected_csv_path):
     assert_main_volume_frame_equals(
         argv=[],
         subjects_dir=root_dir_path,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
+        assert_volume_frames_equal=assert_volume_frames_equal,
     )
 
 
@@ -117,16 +83,18 @@ def test_main_root_dir_env(capsys, root_dir_path, expected_csv_path):
      os.path.abspath(os.sep),
      os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_overwrite_env(capsys, root_dir_path, subjects_dir, expected_csv_path):
+def test_main_root_dir_overwrite_env(capsys, assert_volume_frames_equal,
+                                     root_dir_path, subjects_dir, expected_csv_path):
     assert_main_volume_frame_equals(
         argv=[root_dir_path],
         subjects_dir=subjects_dir,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
+        assert_volume_frames_equal=assert_volume_frames_equal,
     )
 
 
-def test_main_root_dir_filename_regex(capsys):
+def test_main_root_dir_filename_regex(capsys, assert_volume_frames_equal):
     expected_volume_frame = pandas.read_csv(
         os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv'))
     assert_main_volume_frame_equals(
@@ -134,4 +102,5 @@ def test_main_root_dir_filename_regex(capsys):
               os.path.join(SUBJECTS_DIR, 'bert')],
         expected_frame=expected_volume_frame[expected_volume_frame['analysis_id'] == 'T2'].copy(),
         capsys=capsys,
+        assert_volume_frames_equal=assert_volume_frames_equal,
     )

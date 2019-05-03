@@ -1,6 +1,8 @@
 import os
 import re
+import typing
 
+import pandas
 import pytest
 
 from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
@@ -74,6 +76,37 @@ def test_hippocampal_subfields_volume_file_read_volumes_mm3_not_found():
         path=os.path.join(SUBJECTS_DIR, 'non-existing', 'lh.hippoSfVolumes-T1.v10.txt'))
     with pytest.raises(FileNotFoundError):
         volume_file.read_volumes_mm3()
+
+
+@pytest.mark.parametrize(('volume_file_path', 'expected_dataframe'), [
+    (os.path.join(SUBJECTS_DIR, 'alice', 'mri', 'lh.hippoSfVolumes-T1.v10.txt'),
+     pandas.DataFrame({
+         'subfield': ['Hippocampal_tail', 'subiculum', 'CA1', 'hippocampal-fissure',
+                      'presubiculum', 'parasubiculum', 'molecular_layer_HP', 'GC-ML-DG',
+                      'CA3', 'CA4', 'fimbria', 'HATA', 'Whole_hippocampus'],
+         'volume_mm^3': [173.456789, 734.567891, 34.567891, 345.678917, 456.789173, 45.678917,
+                         56.789173, 567.891734, 678.917345, 789.173456, 89.173456, 91.734567,
+                         1734.567899],
+         'subject': 'alice',
+         'hemisphere': 'left',
+         'T1_input': True,
+         'analysis_id': None,
+     })),
+])
+def test_hippocampal_subfields_volume_file_read_volumes_dataframe(
+        assert_volume_frames_equal: typing.Callable,
+        volume_file_path: str, expected_dataframe: pandas.DataFrame):
+    assert_volume_frames_equal(
+        left=expected_dataframe,
+        right=HippocampalSubfieldsVolumeFile(path=volume_file_path).read_volumes_dataframe(),
+    )
+
+
+def test_hippocampal_subfields_volume_file_read_volumes_dataframe_not_found():
+    volume_file = HippocampalSubfieldsVolumeFile(
+        path=os.path.join(SUBJECTS_DIR, 'non-existing', 'lh.hippoSfVolumes-T1.v10.txt'))
+    with pytest.raises(FileNotFoundError):
+        volume_file.read_volumes_dataframe()
 
 
 @pytest.mark.parametrize(('root_dir_path', 'expected_file_paths'), [

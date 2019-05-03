@@ -32,11 +32,10 @@ or
 
 ```python
 from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
-from freesurfer_volume_reader import read_hippocampal_volume_file_dataframe
 
 for volume_file in HippocampalSubfieldsVolumeFile.find('/my/freesurfer/subjects'):
     print(volume_file.read_volumes_mm3())
-    print(read_hippocampal_volume_file_dataframe(volume_file))
+    print(volume_file.read_volumes_dataframe())
 ```
 
 ## Tests
