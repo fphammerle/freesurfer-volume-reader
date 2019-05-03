@@ -75,7 +75,7 @@ def test_hippocampal_subfields_volume_file_read_volumes_mm3_not_found():
     (os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_heur_volumes.txt'),
      pandas.DataFrame({
          'subfield': ['CA1', 'CA2+3', 'DG', 'ERC', 'PHC', 'PRC', 'SUB'],
-         'volume_mm^3': [679.904, 124.459, 902.237, 679.904, 2346.879, 2346.671, 458.782],
+         'volume_mm^3': [679.904, 124.459, 902.237, 789.012, 2346.879, 2346.671, 458.782],
          'subject': 'alice',
          'hemisphere': 'left',
          'correction': None,
