@@ -32,18 +32,19 @@ def main():
     volume_frame_subfields = volume_frame[volume_frame['subfield'] != 'Whole_hippocampus']
     for hemisphere in ['left', 'right']:
         pyplot.ylim(0, 750)
-        ax = seaborn.barplot(data=volume_frame_subfields[volume_frame_subfields['hemisphere'] == hemisphere],
-                             x='subfield', y='volume_mm^3',
-                             hue='subfield_segmentation_mode')
-        ax.set_title('Hippocampal Subfield Volumes of Subject {}'.format(args.subject)
-                     + '\n{} Hemisphere'.format(str.capitalize(hemisphere)))
+        plot_ax = seaborn.barplot(data=volume_frame_subfields[volume_frame_subfields['hemisphere']
+                                                              == hemisphere],
+                                  x='subfield', y='volume_mm^3',
+                                  hue='subfield_segmentation_mode')
+        plot_ax.set_title('Hippocampal Subfield Volumes of Subject {}'.format(args.subject)
+                          + '\n{} Hemisphere'.format(str.capitalize(hemisphere)))
         pyplot.savefig('hippocampal_subfield_volumes_{}_{}.png'.format(args.subject, hemisphere))
         pyplot.clf()
     seaborn.set(font_scale=0.4)
-    ax = seaborn.barplot(data=volume_frame[volume_frame['subfield'] == 'Whole_hippocampus'],
-                         x='hemisphere', y='volume_mm^3',
-                         hue='subfield_segmentation_mode')
-    ax.set_title('Hippocampal Volume of Subject {}'.format(args.subject))
+    plot_ax = seaborn.barplot(data=volume_frame[volume_frame['subfield'] == 'Whole_hippocampus'],
+                              x='hemisphere', y='volume_mm^3',
+                              hue='subfield_segmentation_mode')
+    plot_ax.set_title('Hippocampal Volume of Subject {}'.format(args.subject))
     pyplot.savefig('hippocampal_volume_{}.png'.format(args.subject))
 
 
