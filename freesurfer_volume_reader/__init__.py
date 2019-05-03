@@ -37,7 +37,7 @@ class VolumeFile(metaclass=abc.ABCMeta):
     @classmethod
     def find(cls, root_dir_path: str,
              filename_regex: typing.Optional[typing.Pattern] = None,
-             ) -> typing.Iterator[VolumeFile]:
+             ) -> typing.Iterator['VolumeFile']:
         if not filename_regex:
             filename_regex = cls.FILENAME_REGEX
         for dirpath, _, filenames in os.walk(root_dir_path):
