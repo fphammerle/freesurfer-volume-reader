@@ -29,7 +29,7 @@ from freesurfer_volume_reader.ashs import HippocampalSubfieldsVolumeFile
 ])
 def test_hippocampal_subfields_volume_file_init(volume_file_path, expected_attrs):
     volume_file = HippocampalSubfieldsVolumeFile(path=volume_file_path)
-    assert os.path.basename(volume_file_path) == os.path.basename(volume_file.absolute_path)
+    assert os.path.abspath(volume_file_path) == volume_file.absolute_path
     for attr, value in expected_attrs.items():
         assert value == getattr(volume_file, attr)
 
