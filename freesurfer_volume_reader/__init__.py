@@ -1,55 +1,50 @@
 """
-Read hippocampal subfield volumes computed by Freesurfer
+Read hippocampal subfield volumes computed by Freesurfer and/or ASHS
 
+https://sites.google.com/site/hipposubfields/home
 https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
 
->>> from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
+>>> from freesurfer_volume_reader import ashs, freesurfer
 >>>
->>> for volume_file in HippocampalSubfieldsVolumeFile.find('/my/freesurfer/subjects'):
+>>> for volume_file in itertools.chain(
+>>>         ashs.HippocampalSubfieldsVolumeFile.find('/my/ashs/subjects'),
+>>>         freesurfer.HippocampalSubfieldsVolumeFile.find('/my/freesurfer/subjects')):
+>>>     print(volume_file.absolute_path)
+>>>     print(volume_file.subject, volume_file.hemisphere)
 >>>     print(volume_file.read_volumes_mm3())
 >>>     print(volume_file.read_volumes_dataframe())
 """
 
-import argparse
+import abc
 import os
-import re
 import typing
 
 import pandas
 
-from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
 
+class VolumeFile(metaclass=abc.ABCMeta):
 
-def remove_group_names_from_regex(regex_pattern: str) -> str:
-    return re.sub(r'\?P<.+?>', '', regex_pattern)
+    FILENAME_REGEX = NotImplemented
 
+    @property
+    @abc.abstractmethod
+    def absolute_path(self):
+        raise NotImplementedError()
 
-def main():
-    argparser = argparse.ArgumentParser(description=__doc__,
-                                        formatter_class=argparse.RawDescriptionHelpFormatter)
-    argparser.add_argument('--filename-regex', type=re.compile,
-                           default=remove_group_names_from_regex(
-                               HippocampalSubfieldsVolumeFile.FILENAME_PATTERN),
-                           help='default: %(default)s')
-    argparser.add_argument('--output-format', choices=['csv'], default='csv',
-                           help='default: %(default)s')
-    subjects_dir_path = os.environ.get('SUBJECTS_DIR', None)
-    argparser.add_argument('root_dir_paths',
-                           metavar='ROOT_DIR',
-                           nargs='*' if subjects_dir_path else '+',
-                           default=[subjects_dir_path],
-                           help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
-    args = argparser.parse_args()
-    volume_files = [f for d in args.root_dir_paths
-                    for f in HippocampalSubfieldsVolumeFile.find(
-                        root_dir_path=d, filename_regex=args.filename_regex)]
-    volume_frames = []
-    for volume_file in volume_files:
-        volume_frame = volume_file.read_volumes_dataframe()
-        volume_frame['source_path'] = volume_file.absolute_path
-        volume_frames.append(volume_frame)
-    united_volume_frame = pandas.concat(volume_frames, ignore_index=True)
-    print(united_volume_frame.to_csv(index=False))
+    @abc.abstractmethod
+    def read_volumes_mm3(self) -> typing.Dict[str, float]:
+        raise NotImplementedError()
 
-if __name__ == '__main__':
-    main()
+    @abc.abstractmethod
+    def read_volumes_dataframe(self) -> pandas.DataFrame:
+        raise NotImplementedError()
+
+    @classmethod
+    def find(cls, root_dir_path: str,
+             filename_regex: typing.Optional[typing.Pattern] = None,
+             ) -> typing.Iterator['VolumeFile']:
+        if not filename_regex:
+            filename_regex = cls.FILENAME_REGEX
+        for dirpath, _, filenames in os.walk(root_dir_path):
+            for filename in filter(filename_regex.search, filenames):
+                yield cls(path=os.path.join(dirpath, filename))

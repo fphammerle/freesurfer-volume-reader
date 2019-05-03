@@ -31,9 +31,21 @@ freesurfer-volume-reader /my/freesurfer/subjects /other/freesurfer/subjects
 or
 
 ```python
-from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
+from freesurfer_volume_reader import freesurfer
 
-for volume_file in HippocampalSubfieldsVolumeFile.find('/my/freesurfer/subjects'):
+for volume_file in freesurfer.HippocampalSubfieldsVolumeFile.find('/my/freesurfer/subjects'):
+    print(volume_file.subject, volume_file.hemisphere, volume_file.analysis_id)
+    print(volume_file.read_volumes_mm3())
+    print(volume_file.read_volumes_dataframe())
+```
+
+### ASHS
+
+```python
+from freesurfer_volume_reader import ashs
+
+for volume_file in ashs.HippocampalSubfieldsVolumeFile.find('/my/ashs/subjects'):
+    print(volume_file.subject, volume_file.hemisphere, volume_file.correction)
     print(volume_file.read_volumes_mm3())
     print(volume_file.read_volumes_dataframe())
 ```

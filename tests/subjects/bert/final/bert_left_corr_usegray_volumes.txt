@@ -1,0 +1,7 @@
+bert left CA1 26 678.902
+bert left CA2+3 26 123.457
+bert left DG 25 901.235
+bert left ERC 18 678.902
+bert left PHC 16 2345.877
+bert left PRC 26 2345.679
+bert left SUB 26 457.780

@@ -7,8 +7,7 @@ import pandas
 import pandas.util.testing
 import pytest
 
-import freesurfer_volume_reader
-import freesurfer_volume_reader.freesurfer
+import freesurfer_volume_reader.__main__
 
 from conftest import SUBJECTS_DIR, assert_volume_frames_equal
 
@@ -18,7 +17,7 @@ from conftest import SUBJECTS_DIR, assert_volume_frames_equal
     (r'(?P<a>a(?P<b>b))', r'(a(b))'),
 ])
 def test_remove_group_names_from_regex(source_pattern, expected_pattern):
-    assert expected_pattern == freesurfer_volume_reader.remove_group_names_from_regex(
+    assert expected_pattern == freesurfer_volume_reader.__main__.remove_group_names_from_regex(
         regex_pattern=source_pattern,
     )
 
@@ -30,7 +29,7 @@ def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.D
     elif 'SUBJECTS_DIR' in os.environ:
         del os.environ['SUBJECTS_DIR']
     with unittest.mock.patch('sys.argv', [''] + argv):
-        freesurfer_volume_reader.main()
+        freesurfer_volume_reader.__main__.main()
     out, _ = capsys.readouterr()
     assert_volume_frames_equal(
         left=expected_frame,
