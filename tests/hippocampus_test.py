@@ -8,6 +8,7 @@ import pandas.util.testing
 import pytest
 
 import freesurfer_volume_reader
+import freesurfer_volume_reader.freesurfer
 
 SUBJECTS_DIR = os.path.join(os.path.dirname(__file__), 'subjects')
 
@@ -49,45 +50,6 @@ def test_read_hippocampal_volumes_mm3_not_found():
             os.path.join(SUBJECTS_DIR, 'non-existing', 'lh.hippoSfVolumes-T1.v10.txt'))
 
 
-@pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
-    ('bert/mri/lh.hippoSfVolumes-T1.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': True, 'analysis_id': None}),
-    ('bert/mri/lh.hippoSfVolumes-T1-T2.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': True, 'analysis_id': 'T2'}),
-    ('bert/mri/lh.hippoSfVolumes-T2.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': False, 'analysis_id': 'T2'}),
-    ('bert/mri/lh.hippoSfVolumes-T1-T2-high-res.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': True, 'analysis_id': 'T2-high-res'}),
-    ('bert/mri/lh.hippoSfVolumes-T2-high-res.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': False, 'analysis_id': 'T2-high-res'}),
-    ('bert/mri/lh.hippoSfVolumes-PD.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': False, 'analysis_id': 'PD'}),
-    ('bert/mri/rh.hippoSfVolumes-T1.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'right', 'T1_input': True, 'analysis_id': None}),
-    ('bert/mri/rh.hippoSfVolumes-T1-T2.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'right', 'T1_input': True, 'analysis_id': 'T2'}),
-    ('freesurfer/subjects/bert/mri/lh.hippoSfVolumes-T1.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': True, 'analysis_id': None}),
-    ('../../bert/mri/lh.hippoSfVolumes-T1.v10.txt',
-     {'subject': 'bert', 'hemisphere': 'left', 'T1_input': True, 'analysis_id': None}),
-])
-def test_parse_hippocampal_volume_file_path(volume_file_path, expected_attrs):
-    assert expected_attrs == freesurfer_volume_reader.parse_hippocampal_volume_file_path(
-        volume_file_path=volume_file_path)
-
-
-@pytest.mark.parametrize('volume_file_path', [
-    'bert/mri/lh.hippoSfLabels-T1.v10.mgz',
-    'bert/mri/lh.hippoSfVolumes-T1.v9.txt',
-    'bert/mri/lh.hippoSfVolumes.v10.txt',
-    'bert/mri/mh.hippoSfVolumes-T1.v10.txt',
-])
-def test_parse_hippocampal_volume_file_path_invalid(volume_file_path):
-    with pytest.raises(Exception):
-        freesurfer_volume_reader.parse_hippocampal_volume_file_path(
-            volume_file_path=volume_file_path)
-
-
 @pytest.mark.parametrize(('volume_file_path', 'expected_dataframe'), [
     (os.path.join(SUBJECTS_DIR, 'alice', 'mri', 'lh.hippoSfVolumes-T1.v10.txt'),
      pandas.DataFrame({
@@ -104,10 +66,12 @@ def test_parse_hippocampal_volume_file_path_invalid(volume_file_path):
      })),
 ])
 def test_read_hippocampal_volume_file_dataframe(volume_file_path, expected_dataframe):
+    volume_file = freesurfer_volume_reader.freesurfer.HippocampalSubfieldsVolumeFile(
+        path=volume_file_path)
     assert_volume_frames_equal(
         left=expected_dataframe,
         right=freesurfer_volume_reader.read_hippocampal_volume_file_dataframe(
-            volume_file_path=volume_file_path),
+            volume_file=volume_file),
     )
 
 

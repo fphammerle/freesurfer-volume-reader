@@ -31,11 +31,11 @@ freesurfer-volume-reader /my/freesurfer/subjects /other/freesurfer/subjects
 or
 
 ```python
-from freesurfer_volume_reader import find_hippocampal_volume_files, \
-                                     read_hippocampal_volume_file_dataframe
+from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
+from freesurfer_volume_reader import read_hippocampal_volume_file_dataframe
 
-for volume_file_path in find_hippocampal_volume_files('/my/freesurfer/subjects'):
-    print(read_hippocampal_volume_file_dataframe(volume_file_path))
+for volume_file in HippocampalSubfieldsVolumeFile.find('/my/freesurfer/subjects'):
+    print(read_hippocampal_volume_file_dataframe(volume_file))
 ```
 
 ## Tests

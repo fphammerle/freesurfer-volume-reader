@@ -13,8 +13,6 @@ import pandas
 
 from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
 
-VOLUME_FILENAME_HEMISPHERE_MAP = {'l': 'left', 'r': 'right'}
-
 
 def remove_group_names_from_regex(regex_pattern: str) -> str:
     return re.sub(r'\?P<.+?>', '', regex_pattern)
@@ -31,29 +29,17 @@ def read_hippocampal_volumes_mm3(volume_file_path: str) -> dict:
     return subfield_volumes
 
 
-def parse_hippocampal_volume_file_path(volume_file_path: str) -> dict:
-    subject_dir_path = os.path.dirname(os.path.dirname(os.path.abspath(volume_file_path)))
-    filename_match = HippocampalSubfieldsVolumeFile.FILENAME_REGEX.match(
-        os.path.basename(volume_file_path))
-    assert filename_match, volume_file_path
-    filename_groups = filename_match.groupdict()
-    assert filename_groups['T1'] or filename_groups['analysis_id'], volume_file_path
-    return {
-        'subject': os.path.basename(subject_dir_path),
-        'hemisphere': VOLUME_FILENAME_HEMISPHERE_MAP[filename_groups['h']],
-        'T1_input': filename_groups['T1'] is not None,
-        'analysis_id': filename_groups['analysis_id'],
-    }
-
-
-def read_hippocampal_volume_file_dataframe(volume_file_path: str) -> pandas.DataFrame:
+def read_hippocampal_volume_file_dataframe(volume_file: HippocampalSubfieldsVolumeFile,
+                                           ) -> pandas.DataFrame:
     volumes_frame = pandas.DataFrame([
         {'subfield': s, 'volume_mm^3': v}
-        for s, v in read_hippocampal_volumes_mm3(volume_file_path).items()
+        for s, v in read_hippocampal_volumes_mm3(volume_file.absolute_path).items()
     ])
-    for key, value in parse_hippocampal_volume_file_path(volume_file_path).items():
-        volumes_frame[key] = value
+    volumes_frame['subject'] = volume_file.subject
+    volumes_frame['hemisphere'] = volume_file.hemisphere
     # volumes_frame['hemisphere'] = volumes_frame['hemisphere'].astype('category')
+    volumes_frame['T1_input'] = volume_file.t1_input
+    volumes_frame['analysis_id'] = volume_file.analysis_id
     return volumes_frame
 
 
@@ -72,13 +58,13 @@ def main():
                            default=[subjects_dir_path],
                            help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
     args = argparser.parse_args()
-    volume_file_paths = [p for d in args.root_dir_paths
-                         for p in HippocampalSubfieldsVolumeFile.find(
-                             root_dir_path=d, filename_regex=args.filename_regex)]
+    volume_files = [f for d in args.root_dir_paths
+                    for f in HippocampalSubfieldsVolumeFile.find(
+                        root_dir_path=d, filename_regex=args.filename_regex)]
     volume_frames = []
-    for volume_file_path in volume_file_paths:
-        volume_frame = read_hippocampal_volume_file_dataframe(volume_file_path)
-        volume_frame['source_path'] = os.path.abspath(volume_file_path)
+    for volume_file in volume_files:
+        volume_frame = read_hippocampal_volume_file_dataframe(volume_file)
+        volume_frame['source_path'] = volume_file.absolute_path
         volume_frames.append(volume_frame)
     united_volume_frame = pandas.concat(volume_frames, ignore_index=True)
     print(united_volume_frame.to_csv(index=False))
