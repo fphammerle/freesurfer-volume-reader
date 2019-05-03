@@ -9,11 +9,7 @@ import re
 
 import pandas
 
-from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
-
-
-def remove_group_names_from_regex(regex_pattern: str) -> str:
-    return re.sub(r'\?P<.+?>', '', regex_pattern)
+from freesurfer_volume_reader import freesurfer, remove_group_names_from_regex
 
 
 def main():
@@ -21,7 +17,7 @@ def main():
                                         formatter_class=argparse.RawDescriptionHelpFormatter)
     argparser.add_argument('--filename-regex', type=re.compile,
                            default=remove_group_names_from_regex(
-                               HippocampalSubfieldsVolumeFile.FILENAME_PATTERN),
+                               freesurfer.HippocampalSubfieldsVolumeFile.FILENAME_PATTERN),
                            help='default: %(default)s')
     argparser.add_argument('--output-format', choices=['csv'], default='csv',
                            help='default: %(default)s')
@@ -33,7 +29,7 @@ def main():
                            help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
     args = argparser.parse_args()
     volume_files = [f for d in args.root_dir_paths
-                    for f in HippocampalSubfieldsVolumeFile.find(
+                    for f in freesurfer.HippocampalSubfieldsVolumeFile.find(
                         root_dir_path=d, filename_regex=args.filename_regex)]
     volume_frames = []
     for volume_file in volume_files:

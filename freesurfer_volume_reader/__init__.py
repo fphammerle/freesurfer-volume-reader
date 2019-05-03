@@ -17,9 +17,14 @@ https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
 
 import abc
 import os
+import re
 import typing
 
 import pandas
+
+
+def remove_group_names_from_regex(regex_pattern: str) -> str:
+    return re.sub(r'\?P<.+?>', '', regex_pattern)
 
 
 class VolumeFile(metaclass=abc.ABCMeta):

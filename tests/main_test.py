@@ -12,16 +12,6 @@ import freesurfer_volume_reader.__main__
 from conftest import SUBJECTS_DIR, assert_volume_frames_equal
 
 
-@pytest.mark.parametrize(('source_pattern', 'expected_pattern'), [
-    (r'^(?P<h>[lr])h\.hippoSfVolumes', r'^([lr])h\.hippoSfVolumes'),
-    (r'(?P<a>a(?P<b>b))', r'(a(b))'),
-])
-def test_remove_group_names_from_regex(source_pattern, expected_pattern):
-    assert expected_pattern == freesurfer_volume_reader.__main__.remove_group_names_from_regex(
-        regex_pattern=source_pattern,
-    )
-
-
 def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.DataFrame,
                                     subjects_dir: typing.Optional[str] = None):
     if subjects_dir:
