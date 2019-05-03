@@ -1,6 +1,5 @@
 import io
 import os
-import re
 import typing
 import unittest.mock
 
@@ -13,36 +12,14 @@ import freesurfer_volume_reader
 SUBJECTS_DIR = os.path.join(os.path.dirname(__file__), 'subjects')
 
 
-@pytest.mark.parametrize(('root_dir_path', 'expected_file_paths'), [
-    (SUBJECTS_DIR,
-     {os.path.join(SUBJECTS_DIR, 'alice', 'mri', 'lh.hippoSfVolumes-T1.v10.txt'),
-      os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1-T2.v10.txt'),
-      os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1.v10.txt')}),
-    (os.path.join(SUBJECTS_DIR, 'bert'),
-     {os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1-T2.v10.txt'),
-      os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1.v10.txt')}),
-    (os.path.join(SUBJECTS_DIR, 'bert', 'mri'),
-     {os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1-T2.v10.txt'),
-      os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1.v10.txt')}),
+@pytest.mark.parametrize(('source_pattern', 'expected_pattern'), [
+    (r'^(?P<h>[lr])h\.hippoSfVolumes', r'^([lr])h\.hippoSfVolumes'),
+    (r'(?P<a>a(?P<b>b))', r'(a(b))'),
 ])
-def test_find_hippocampal_volume_files(root_dir_path, expected_file_paths):
-    assert expected_file_paths == set(
-        freesurfer_volume_reader.find_hippocampal_volume_files(root_dir_path=root_dir_path))
-
-
-@pytest.mark.parametrize(('root_dir_path', 'filename_pattern', 'expected_file_paths'), [
-    (SUBJECTS_DIR,
-     r'hippoSfVolumes-T1\.v10',
-     {os.path.join(SUBJECTS_DIR, 'alice', 'mri', 'lh.hippoSfVolumes-T1.v10.txt'),
-      os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1.v10.txt')}),
-    (os.path.join(SUBJECTS_DIR, 'bert'),
-     r'hippoSfVolumes-T1-T2',
-     {os.path.join(SUBJECTS_DIR, 'bert', 'mri', 'lh.hippoSfVolumes-T1-T2.v10.txt')}),
-])
-def test_find_hippocampal_volume_files_pattern(root_dir_path, filename_pattern,
-                                               expected_file_paths):
-    assert expected_file_paths == set(freesurfer_volume_reader.find_hippocampal_volume_files(
-        root_dir_path=root_dir_path, filename_regex=re.compile(filename_pattern)))
+def test_remove_group_names_from_regex(source_pattern, expected_pattern):
+    assert expected_pattern == freesurfer_volume_reader.remove_group_names_from_regex(
+        regex_pattern=source_pattern,
+    )
 
 
 @pytest.mark.parametrize(('volume_file_path', 'expected_volumes'), [
@@ -146,6 +123,7 @@ def assert_volume_frames_equal(left: pandas.DataFrame, right: pandas.DataFrame):
         # ignore the order of index & columns
         check_like=True,
     )
+
 
 def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.DataFrame,
                                     subjects_dir: typing.Optional[str] = None):

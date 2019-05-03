@@ -4,8 +4,8 @@ from matplotlib import pyplot
 import pandas
 import seaborn
 
-from freesurfer_volume_reader import find_hippocampal_volume_files, \
-                                     read_hippocampal_volume_file_dataframe
+from freesurfer_volume_reader.freesurfer import FreesurferHippocampalVolumeFile
+from freesurfer_volume_reader import read_hippocampal_volume_file_dataframe
 
 
 def abbreviate_analysis_id(analysis_id):
@@ -18,7 +18,7 @@ def main():
     argparser.add_argument('--subjects-dir', dest='subjects_dir_path', required=True)
     args = argparser.parse_args()
     volume_frame = pandas.concat(read_hippocampal_volume_file_dataframe(p)
-                                 for p in find_hippocampal_volume_files(args.subjects_dir_path))
+                                 for p in FreesurferHippocampalVolumeFile.find(args.subjects_dir_path))
     volume_frame = volume_frame[volume_frame['subject'] == args.subject]
     volume_frame['subfield_segmentation_mode'] = volume_frame.apply(
         lambda row: ' & '.join(filter(None, ('T1' if row['T1_input'] else None,
