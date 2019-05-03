@@ -28,30 +28,102 @@ def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.D
     )
 
 
-@pytest.mark.parametrize(('root_dir_paths', 'expected_csv_path'), [
-    ([os.path.join(SUBJECTS_DIR, 'alice')],
-     os.path.join(SUBJECTS_DIR, 'alice', 'hippocampal-volumes.csv')),
-    ([os.path.join(SUBJECTS_DIR, 'bert')],
-     os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
-    ([os.path.join(SUBJECTS_DIR, 'alice'),
+@pytest.mark.parametrize(('args', 'root_dir_paths', 'expected_csv_path'), [
+    ([],
+     [os.path.join(SUBJECTS_DIR, 'alice')],
+     os.path.join(SUBJECTS_DIR, 'alice', 'freesurfer-hippocampal-volumes.csv')),
+    ([],
+     [os.path.join(SUBJECTS_DIR, 'bert')],
+     os.path.join(SUBJECTS_DIR, 'bert', 'freesurfer-hippocampal-volumes.csv')),
+    ([],
+     [os.path.join(SUBJECTS_DIR, 'alice'),
+      os.path.join(SUBJECTS_DIR, 'bert')],
+     os.path.join(SUBJECTS_DIR, 'freesurfer-hippocampal-volumes.csv')),
+    ([],
+     [SUBJECTS_DIR],
+     os.path.join(SUBJECTS_DIR, 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer'],
+     [os.path.join(SUBJECTS_DIR, 'alice')],
+     os.path.join(SUBJECTS_DIR, 'alice', 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer'],
+     [SUBJECTS_DIR],
+     os.path.join(SUBJECTS_DIR, 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     [os.path.join(SUBJECTS_DIR, 'alice')],
+     os.path.join(SUBJECTS_DIR, 'alice', 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     [os.path.join(SUBJECTS_DIR, 'bert')],
+     os.path.join(SUBJECTS_DIR, 'bert', 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     [os.path.join(SUBJECTS_DIR, 'alice'),
+      os.path.join(SUBJECTS_DIR, 'bert')],
+     os.path.join(SUBJECTS_DIR, 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     [SUBJECTS_DIR],
+     os.path.join(SUBJECTS_DIR, 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs', 'freesurfer'],
+     [os.path.join(SUBJECTS_DIR, 'alice')],
+     os.path.join(SUBJECTS_DIR, 'alice', 'all-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer', 'ashs'],
+     [os.path.join(SUBJECTS_DIR, 'alice')],
+     os.path.join(SUBJECTS_DIR, 'alice', 'all-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs', 'freesurfer'],
+     [os.path.join(SUBJECTS_DIR, 'alice'),
       os.path.join(SUBJECTS_DIR, 'bert')],
      os.path.join(SUBJECTS_DIR, 'all-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs', 'freesurfer'],
+     [SUBJECTS_DIR],
+     os.path.join(SUBJECTS_DIR, 'all-hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_param(capsys, root_dir_paths: list, expected_csv_path):
+def test_main_root_dir_param(capsys, args, root_dir_paths: list, expected_csv_path):
     assert_main_volume_frame_equals(
-        argv=root_dir_paths,
+        argv=args + ['--'] + root_dir_paths,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
     )
 
 
-@pytest.mark.parametrize(('root_dir_path', 'expected_csv_path'), [
-    (os.path.join(SUBJECTS_DIR, 'bert'),
-     os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
+@pytest.mark.parametrize(('args', 'root_dir_path', 'expected_csv_path'), [
+    ([],
+     SUBJECTS_DIR,
+     os.path.join(SUBJECTS_DIR, 'freesurfer-hippocampal-volumes.csv')),
+    ([],
+     os.path.join(SUBJECTS_DIR, 'bert'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer'],
+     SUBJECTS_DIR,
+     os.path.join(SUBJECTS_DIR, 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer'],
+     os.path.join(SUBJECTS_DIR, 'bert'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer'],
+     os.path.join(SUBJECTS_DIR, 'bert', 'mri'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     SUBJECTS_DIR,
+     os.path.join(SUBJECTS_DIR, 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     os.path.join(SUBJECTS_DIR, 'bert'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     os.path.join(SUBJECTS_DIR, 'bert', 'final'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     os.path.join(SUBJECTS_DIR, 'alice'),
+     os.path.join(SUBJECTS_DIR, 'alice', 'ashs-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs', 'freesurfer'],
+     os.path.join(SUBJECTS_DIR, 'alice'),
+     os.path.join(SUBJECTS_DIR, 'alice', 'all-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer', 'ashs'],
+     os.path.join(SUBJECTS_DIR, 'alice'),
+     os.path.join(SUBJECTS_DIR, 'alice', 'all-hippocampal-volumes.csv')),
+    (['--source-types', 'freesurfer', 'ashs'],
+     SUBJECTS_DIR,
+     os.path.join(SUBJECTS_DIR, 'all-hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_env(capsys, root_dir_path, expected_csv_path):
+def test_main_root_dir_env(capsys, args, root_dir_path, expected_csv_path):
     assert_main_volume_frame_equals(
-        argv=[],
+        argv=args,
         subjects_dir=root_dir_path,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
@@ -59,29 +131,48 @@ def test_main_root_dir_env(capsys, root_dir_path, expected_csv_path):
 
 
 @pytest.mark.timeout(8)
-@pytest.mark.parametrize(('root_dir_path', 'subjects_dir', 'expected_csv_path'), [
-    (os.path.join(SUBJECTS_DIR, 'bert'),
+@pytest.mark.parametrize(('args', 'root_dir_path', 'subjects_dir', 'expected_csv_path'), [
+    ([],
+     os.path.join(SUBJECTS_DIR, 'bert'),
      os.path.join(SUBJECTS_DIR, 'alice'),
-     os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
-    (os.path.join(SUBJECTS_DIR, 'bert'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'freesurfer-hippocampal-volumes.csv')),
+    (['--source-types', 'ashs'],
+     os.path.join(SUBJECTS_DIR, 'bert'),
+     os.path.join(SUBJECTS_DIR, 'alice'),
+     os.path.join(SUBJECTS_DIR, 'bert', 'ashs-hippocampal-volumes.csv')),
+    ([],
+     os.path.join(SUBJECTS_DIR, 'bert'),
      os.path.abspath(os.sep),
-     os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv')),
+     os.path.join(SUBJECTS_DIR, 'bert', 'freesurfer-hippocampal-volumes.csv')),
 ])
-def test_main_root_dir_overwrite_env(capsys, root_dir_path, subjects_dir, expected_csv_path):
+def test_main_root_dir_overwrite_env(capsys, args, root_dir_path, subjects_dir, expected_csv_path):
     assert_main_volume_frame_equals(
-        argv=[root_dir_path],
+        argv=args + ['--', root_dir_path],
         subjects_dir=subjects_dir,
         expected_frame=pandas.read_csv(expected_csv_path),
         capsys=capsys,
     )
 
 
-def test_main_root_dir_filename_regex(capsys):
+def test_main_root_dir_filename_regex_freesurfer(capsys):
     expected_volume_frame = pandas.read_csv(
-        os.path.join(SUBJECTS_DIR, 'bert', 'hippocampal-volumes.csv'))
+        os.path.join(SUBJECTS_DIR, 'bert', 'freesurfer-hippocampal-volumes.csv'))
     assert_main_volume_frame_equals(
-        argv=['--filename-regex', r'^.*-T1-T2\.v10\.txt$',
+        argv=['--freesurfer-filename-regex', r'^.*-T1-T2\.v10\.txt$',
               os.path.join(SUBJECTS_DIR, 'bert')],
         expected_frame=expected_volume_frame[expected_volume_frame['analysis_id'] == 'T2'].copy(),
+        capsys=capsys,
+    )
+
+
+def test_main_root_dir_filename_regex_ashs(capsys):
+    expected_volume_frame = pandas.read_csv(
+        os.path.join(SUBJECTS_DIR, 'bert', 'ashs-hippocampal-volumes.csv'))
+    assert_main_volume_frame_equals(
+        argv=['--ashs-filename-regex', r'_nogray_volumes.txt$',
+              '--source-types', 'ashs', '--',
+              os.path.join(SUBJECTS_DIR, 'bert')],
+        expected_frame=expected_volume_frame[expected_volume_frame['correction']
+                                             == 'nogray'].copy(),
         capsys=capsys,
     )

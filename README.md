@@ -3,9 +3,10 @@
 [![Build Status](https://travis-ci.org/fphammerle/freesurfer-volume-reader.svg?branch=master)](https://travis-ci.org/fphammerle/freesurfer-volume-reader)
 
 Python script & library to
-read hippocampal subfield volumes computed by Freesurfer
+read hippocampal subfield volumes computed by Freesurfer & ASHS
 
-https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
+Freesurfer https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
+ASHS https://sites.google.com/site/hipposubfields/home
 
 ## Install
 
@@ -15,6 +16,8 @@ freesurfer-volume-reader --help
 ```
 
 ## Usage
+
+### Freesurfer
 
 ```sh
 export SUBJECTS_DIR=/my/freesurfer/subjects
@@ -41,6 +44,20 @@ for volume_file in freesurfer.HippocampalSubfieldsVolumeFile.find('/my/freesurfe
 
 ### ASHS
 
+```sh
+export SUBJECTS_DIR=/my/ashs/subjects
+freesurfer-volume-reader --source-types ashs
+```
+
+or
+
+```sh
+freesurfer-volume-reader --source-types ashs -- /my/ashs/subjects
+freesurfer-volume-reader --source-types ashs -- /my/ashs/subjects /other/ashs/subjects
+```
+
+or
+
 ```python
 from freesurfer_volume_reader import ashs
 
@@ -48,6 +65,13 @@ for volume_file in ashs.HippocampalSubfieldsVolumeFile.find('/my/ashs/subjects')
     print(volume_file.subject, volume_file.hemisphere, volume_file.correction)
     print(volume_file.read_volumes_mm3())
     print(volume_file.read_volumes_dataframe())
+```
+
+### Freesurfer & ASHS
+
+```sh
+freesurfer-volume-reader --source-types ashs freesurfer -- /my/subjects
+freesurfer-volume-reader --source-types ashs freesurfer -- /my/ashs/subjects /my/freesurfer/subjects /other/subjects
 ```
 
 ## Tests
