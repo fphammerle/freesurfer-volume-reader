@@ -10,7 +10,7 @@ import pytest
 import freesurfer_volume_reader
 import freesurfer_volume_reader.freesurfer
 
-SUBJECTS_DIR = os.path.join(os.path.dirname(__file__), 'subjects')
+from conftest import SUBJECTS_DIR
 
 
 @pytest.mark.parametrize(('source_pattern', 'expected_pattern'), [

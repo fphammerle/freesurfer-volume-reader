@@ -1,5 +1,9 @@
+import os
+
 import pandas
 import pytest
+
+SUBJECTS_DIR = os.path.join(os.path.dirname(__file__), 'subjects')
 
 
 def _assert_volume_frames_equal(left: pandas.DataFrame, right: pandas.DataFrame):

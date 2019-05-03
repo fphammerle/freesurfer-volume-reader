@@ -7,7 +7,7 @@ import pytest
 
 from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
 
-SUBJECTS_DIR = os.path.join(os.path.dirname(__file__), 'subjects')
+from conftest import SUBJECTS_DIR
 
 
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
