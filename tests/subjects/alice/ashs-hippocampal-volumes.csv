@@ -2,7 +2,7 @@ source_type,subject,hemisphere,correction,subfield,volume_mm^3
 ashs,alice,left,nogray,CA1,679.903
 ashs,alice,left,nogray,CA2+3,124.458
 ashs,alice,left,nogray,DG,902.236
-ashs,alice,left,nogray,ERC,679.903
+ashs,alice,left,nogray,ERC,789.011
 ashs,alice,left,nogray,PHC,2346.878
 ashs,alice,left,nogray,PRC,2346.670
 ashs,alice,left,nogray,SUB,458.781
