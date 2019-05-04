@@ -1,6 +1,7 @@
 import pytest
 
-from freesurfer_volume_reader import parse_version_string, remove_group_names_from_regex
+from freesurfer_volume_reader import parse_version_string, remove_group_names_from_regex, \
+                                     VolumeFile
 
 
 @pytest.mark.parametrize(('version_string', 'expected_tuple'), [
@@ -30,3 +31,28 @@ def test_parse_version_string_comparison():
 ])
 def test_remove_group_names_from_regex(source_pattern, expected_pattern):
     assert expected_pattern == remove_group_names_from_regex(regex_pattern=source_pattern)
+
+
+class DummyVolumeFile(VolumeFile):
+
+    # pylint: disable=useless-super-delegation
+
+    @property
+    def absolute_path(self):
+        return super().absolute_path
+
+    def read_volumes_mm3(self):
+        return super().read_volumes_mm3()
+
+    def read_volumes_dataframe(self):
+        return super().read_volumes_dataframe()
+
+
+def test_volume_file_abstractmethod():
+    volume_file = DummyVolumeFile()
+    with pytest.raises(NotImplementedError):
+        assert volume_file.absolute_path
+    with pytest.raises(NotImplementedError):
+        volume_file.read_volumes_mm3()
+    with pytest.raises(NotImplementedError):
+        volume_file.read_volumes_dataframe()

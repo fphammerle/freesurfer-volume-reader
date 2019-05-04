@@ -1,5 +1,6 @@
 import io
 import os
+import subprocess
 import typing
 import unittest.mock
 
@@ -198,3 +199,8 @@ def test_main_root_dir_filename_regex_combined(capsys):
         expected_frame=expected_volume_frame.copy(),
         capsys=capsys,
     )
+
+
+def test_main_module_script():
+    subprocess.run(['python', '-m', 'freesurfer_volume_reader', '--help'],
+                   check=True)
