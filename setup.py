@@ -1,3 +1,5 @@
+import os
+
 import setuptools
 
 import freesurfer_volume_reader
@@ -7,7 +9,7 @@ LONG_DESCRIPTION = freesurfer_volume_reader.__doc__.strip()
 
 setuptools.setup(
     name='freesurfer-volume-reader',
-    use_scm_version=True,
+    use_scm_version={'write_to': os.path.join('freesurfer_volume_reader', 'version.py')},
     description=LONG_DESCRIPTION.split(sep='\n', maxsplit=1)[0],
     long_description=LONG_DESCRIPTION,
     author='Fabian Peter Hammerle',
