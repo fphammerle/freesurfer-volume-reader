@@ -40,4 +40,4 @@ install:
 
 script:
 - pipenv run pylint freesurfer_volume_reader tests/*
-- pipenv run pytest
+- pipenv run pytest --cov=freesurfer_volume_reader --cov-report=term-missing
