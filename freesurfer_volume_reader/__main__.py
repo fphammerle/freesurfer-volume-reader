@@ -44,10 +44,10 @@ def main():
                        if k.startswith('filename_regex.')}
     volume_frames = []
     for source_type in args.source_types:
-        finder = VOLUME_FILE_FINDERS[source_type].find
+        find_volume_files = lambda dir_path: VOLUME_FILE_FINDERS[source_type].find(
+            root_dir_path=dir_path, filename_regex=filename_regexs[source_type])
         for root_dir_path in args.root_dir_paths:
-            for volume_file in finder(root_dir_path=root_dir_path,
-                                      filename_regex=filename_regexs[source_type]):
+            for volume_file in find_volume_files(root_dir_path):
                 volume_frame = volume_file.read_volumes_dataframe()
                 volume_frame['source_type'] = source_type
                 volume_frame['source_path'] = volume_file.absolute_path
