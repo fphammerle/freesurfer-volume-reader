@@ -6,6 +6,7 @@ and export collected data as CSV.
 import argparse
 import os
 import re
+import sys
 import typing
 
 import pandas
@@ -62,8 +63,12 @@ def main():
                 volume_frame['source_type'] = source_type
                 volume_frame['source_path'] = volume_file.absolute_path
                 volume_frames.append(volume_frame)
+    if not volume_frames:
+        print('Did not find any volume files matching the specified criteria.', file=sys.stderr)
+        return os.EX_NOINPUT
     united_volume_frame = concat_dataframes(volume_frames)
     print(united_volume_frame.to_csv(index=False))
+    return os.EX_OK
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

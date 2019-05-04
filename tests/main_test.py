@@ -21,7 +21,7 @@ def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.D
     elif 'SUBJECTS_DIR' in os.environ:
         del os.environ['SUBJECTS_DIR']
     with unittest.mock.patch('sys.argv', [''] + argv):
-        freesurfer_volume_reader.__main__.main()
+        assert freesurfer_volume_reader.__main__.main() == 0
     out, _ = capsys.readouterr()
     resulted_frame = pandas.read_csv(io.StringIO(out)).drop(columns=['source_path'])
     if 'correction' in resulted_frame:
@@ -205,11 +205,30 @@ def test_main_root_dir_filename_regex_combined(capsys):
 def test_main_no_files_found(capsys):
     with unittest.mock.patch('sys.argv', ['', '--freesurfer-hipposf-filename-regex', r'^21$',
                                           '--', SUBJECTS_DIR]):
-        with pytest.raises(ValueError):
-            freesurfer_volume_reader.__main__.main()
+        assert os.EX_NOINPUT == freesurfer_volume_reader.__main__.main()
     out, err = capsys.readouterr()
     assert not out
-    assert not err
+    assert err == 'Did not find any volume files matching the specified criteria.\n'
+
+
+def test_main_module_script_no_files_found():
+    proc_info = subprocess.run(['python', '-m', 'freesurfer_volume_reader',
+                                '--freesurfer-hipposf-filename-regex', r'^21$',
+                                '--', SUBJECTS_DIR],
+                               check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assert os.EX_NOINPUT == proc_info.returncode
+    assert not proc_info.stdout
+    assert 'not find any volume files' in proc_info.stderr.rstrip().decode()
+
+
+def test_script_no_files_found():
+    proc_info = subprocess.run(['freesurfer-volume-reader',
+                                '--freesurfer-hipposf-filename-regex', r'^21$',
+                                '--', SUBJECTS_DIR],
+                               check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assert os.EX_NOINPUT == proc_info.returncode
+    assert not proc_info.stdout
+    assert 'not find any volume files' in proc_info.stderr.rstrip().decode()
 
 
 def test_main_module_script_help():
