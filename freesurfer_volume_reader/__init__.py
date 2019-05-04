@@ -23,9 +23,8 @@ import typing
 import pandas
 
 try:
-    import freesurfer_volume_reader.version
-    __version__ = freesurfer_volume_reader.version.version
-except ModuleNotFoundError:  # pragma: no cover
+    from freesurfer_volume_reader.version import __version__
+except ImportError:  # pragma: no cover
     __version__ = None
 
 

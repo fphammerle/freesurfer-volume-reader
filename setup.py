@@ -9,7 +9,11 @@ LONG_DESCRIPTION = freesurfer_volume_reader.__doc__.strip()
 
 setuptools.setup(
     name='freesurfer-volume-reader',
-    use_scm_version={'write_to': os.path.join('freesurfer_volume_reader', 'version.py')},
+    use_scm_version={
+        'write_to': os.path.join('freesurfer_volume_reader', 'version.py'),
+        # `version` triggers pylint C0103 
+        'write_to_template': "__version__ = '{version}'\n",
+    },
     description=LONG_DESCRIPTION.split(sep='\n', maxsplit=1)[0],
     long_description=LONG_DESCRIPTION,
     author='Fabian Peter Hammerle',
