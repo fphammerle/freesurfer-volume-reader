@@ -70,8 +70,8 @@ for volume_file in ashs.HippocampalSubfieldsVolumeFile.find('/my/ashs/subjects')
 ### Freesurfer & ASHS
 
 ```sh
-freesurfer-volume-reader --source-types ashs freesurfer -- /my/subjects
-freesurfer-volume-reader --source-types ashs freesurfer -- /my/ashs/subjects /my/freesurfer/subjects /other/subjects
+freesurfer-volume-reader --source-types ashs freesurfer-hipposf -- /my/subjects
+freesurfer-volume-reader --source-types ashs freesurfer-hipposf -- /my/ashs/subjects /my/freesurfer/subjects /other/subjects
 ```
 
 ## Tests
