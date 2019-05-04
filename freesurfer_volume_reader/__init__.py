@@ -17,9 +17,18 @@ https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
 
 import abc
 import os
+import re
 import typing
 
 import pandas
+
+
+def parse_version_string(version_string: str) -> typing.Tuple[typing.Union[int, str]]:
+    return tuple(int(p) if p.isdigit() else p for p in version_string.split('.'))
+
+
+def remove_group_names_from_regex(regex_pattern: str) -> str:
+    return re.sub(r'\?P<.+?>', '', regex_pattern)
 
 
 class VolumeFile(metaclass=abc.ABCMeta):

@@ -54,7 +54,7 @@ def test_hippocampal_subfields_volume_file_init_invalid(volume_file_path):
      {'CA1': 678.901,
       'CA2+3': 123.456,
       'DG': 901.234,
-      'ERC': 678.901,
+      'ERC': 789.012,
       'PHC': 2345.876,
       'PRC': 2345.678,
       'SUB': 457.789}),
