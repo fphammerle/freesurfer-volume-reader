@@ -1,7 +1,7 @@
 bert right CA1 26 678.903
 bert right CA2+3 26 123.458
 bert right DG 25 901.236
-bert right ERC 18 678.903
+bert right ERC 18 789.013
 bert right PHC 16 2345.878
 bert right PRC 26 2345.670
 bert right SUB 26 457.781
