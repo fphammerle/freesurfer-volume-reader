@@ -9,7 +9,8 @@ import re
 
 import pandas
 
-from freesurfer_volume_reader import ashs, freesurfer, remove_group_names_from_regex
+from freesurfer_volume_reader import ashs, freesurfer, parse_version_string, \
+                                     remove_group_names_from_regex
 
 VOLUME_FILE_FINDERS = {
     'ashs': ashs.HippocampalSubfieldsVolumeFile,
@@ -49,7 +50,10 @@ def main():
                 volume_frame['source_type'] = source_type
                 volume_frame['source_path'] = volume_file.absolute_path
                 volume_frames.append(volume_frame)
-    united_volume_frame = pandas.concat(volume_frames, ignore_index=True, sort=False)
+    if parse_version_string(pandas.__version__) < (0, 23):
+        united_volume_frame = pandas.concat(volume_frames, ignore_index=True)
+    else:
+        united_volume_frame = pandas.concat(volume_frames, ignore_index=True, sort=False)
     print(united_volume_frame.to_csv(index=False))
 
 if __name__ == '__main__':
