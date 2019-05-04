@@ -41,15 +41,15 @@ setuptools.setup(
     },
     install_requires=[
         # pandas.DataFrame.drop(columns=[...], ...)
-        'pandas>=0.21.0',
+        'pandas>=0.21.0,<1',
     ],
     setup_requires=[
         'setuptools_scm',
     ],
     tests_require=[
-        'pylint>=2.3.0',
-        'pytest',
+        'pylint>=2.3.0,<3',
+        'pytest<5',
         'pytest-cov<3,>=2',
-        'pytest-timeout',
+        'pytest-timeout<2',
     ],
 )
