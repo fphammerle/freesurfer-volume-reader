@@ -1,6 +1,8 @@
 # freesurfer-volume-reader
 
 [![Build Status](https://travis-ci.org/fphammerle/freesurfer-volume-reader.svg?branch=master)](https://travis-ci.org/fphammerle/freesurfer-volume-reader)
+[![Coverage Status](https://coveralls.io/repos/github/fphammerle/freesurfer-volume-reader/badge.svg?branch=master)](https://coveralls.io/github/fphammerle/freesurfer-volume-reader?branch=master)
+[![Python Versions](https://img.shields.io/pypi/pyversions/freesurfer-volume-reader.svg)](https://pypi.org/project/freesurfer-volume-reader/)
 
 Python script & library to
 read hippocampal subfield volumes computed by Freesurfer & ASHS
