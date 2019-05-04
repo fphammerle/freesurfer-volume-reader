@@ -9,6 +9,7 @@ freesurfer-volume-reader = {editable = true, path = "."}
 [dev-packages]
 pylint = ">=2.3.0"
 pytest = "*"
+pytest-cov = "<3,>=2"
 pytest-timeout = "*"
 
 [requires]
