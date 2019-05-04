@@ -14,19 +14,21 @@ from freesurfer_volume_reader import ashs, freesurfer, parse_version_string, \
 
 VOLUME_FILE_FINDERS = {
     'ashs': ashs.HippocampalSubfieldsVolumeFile,
-    'freesurfer': freesurfer.HippocampalSubfieldsVolumeFile,
+    # https://github.com/freesurfer/freesurfer/tree/release_6_0_0/HippoSF
+    'freesurfer-hipposf': freesurfer.HippocampalSubfieldsVolumeFile,
 }
 
 
 def main():
     argparser = argparse.ArgumentParser(description=__doc__,
                                         formatter_class=argparse.RawDescriptionHelpFormatter)
-    argparser.add_argument('--source-types', nargs='+', default=['freesurfer'],
+    argparser.add_argument('--source-types', nargs='+', default=['freesurfer-hipposf'],
                            choices=VOLUME_FILE_FINDERS.keys(),
-                           help='default: [freesurfer]')
+                           help='default: [freesurfer-hipposf]')
     for source_type, file_class in VOLUME_FILE_FINDERS.items():
         argparser.add_argument('--{}-filename-regex'.format(source_type),
-                               type=re.compile,
+                               dest='filename_regex.{}'.format(source_type),
+                               metavar='REGULAR_EXPRESSION', type=re.compile,
                                default=remove_group_names_from_regex(file_class.FILENAME_PATTERN),
                                help='default: %(default)s')
     argparser.add_argument('--output-format', choices=['csv'], default='csv',
@@ -38,8 +40,8 @@ def main():
                            default=[subjects_dir_path],
                            help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
     args = argparser.parse_args()
-    filename_regexs = {k[:-len('_filename_regex')]: v for k, v in vars(args).items()
-                       if k.endswith('_filename_regex')}
+    filename_regexs = {k[len('filename_regex.'):]: v for k, v in vars(args).items()
+                       if k.startswith('filename_regex.')}
     volume_frames = []
     for source_type in args.source_types:
         finder = VOLUME_FILE_FINDERS[source_type].find

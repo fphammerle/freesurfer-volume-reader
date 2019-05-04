@@ -2,6 +2,7 @@
 Read hippocampal subfield volumes computed by Freesurfer
 
 https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
+https://github.com/freesurfer/freesurfer/tree/release_6_0_0/HippoSF
 
 >>> from freesurfer_volume_reader.freesurfer import HippocampalSubfieldsVolumeFile
 >>>
