@@ -8,6 +8,7 @@ import pandas
 import pandas.util.testing
 import pytest
 
+import freesurfer_volume_reader
 import freesurfer_volume_reader.__main__
 
 from conftest import SUBJECTS_DIR, assert_volume_frames_equal
@@ -201,6 +202,13 @@ def test_main_root_dir_filename_regex_combined(capsys):
     )
 
 
-def test_main_module_script():
+def test_main_module_script_help():
     subprocess.run(['python', '-m', 'freesurfer_volume_reader', '--help'],
                    check=True)
+
+
+def test_main_module_script_version():
+    proc_info = subprocess.run(['python', '-m', 'freesurfer_volume_reader', '--version'],
+                               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assert proc_info.stdout.rstrip() == freesurfer_volume_reader.__version__.encode()
+    assert not proc_info.stderr

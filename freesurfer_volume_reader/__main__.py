@@ -10,7 +10,7 @@ import typing
 
 import pandas
 
-from freesurfer_volume_reader import ashs, freesurfer, parse_version_string, \
+from freesurfer_volume_reader import __version__, ashs, freesurfer, parse_version_string, \
                                      remove_group_names_from_regex
 
 def concat_dataframes(dataframes: typing.Iterable[pandas.DataFrame]
@@ -48,6 +48,7 @@ def main():
                            nargs='*' if subjects_dir_path else '+',
                            default=[subjects_dir_path],
                            help='default: $SUBJECTS_DIR ({})'.format(subjects_dir_path))
+    argparser.add_argument('--version', action='version', version=__version__)
     args = argparser.parse_args()
     filename_regexs = {k[len('filename_regex.'):]: v for k, v in vars(args).items()
                        if k.startswith('filename_regex.')}
