@@ -1,3 +1,5 @@
+import os
+
 import setuptools
 
 import freesurfer_volume_reader
@@ -7,7 +9,11 @@ LONG_DESCRIPTION = freesurfer_volume_reader.__doc__.strip()
 
 setuptools.setup(
     name='freesurfer-volume-reader',
-    use_scm_version=True,
+    use_scm_version={
+        'write_to': os.path.join('freesurfer_volume_reader', 'version.py'),
+        # `version` triggers pylint C0103 
+        'write_to_template': "__version__ = '{version}'\n",
+    },
     description=LONG_DESCRIPTION.split(sep='\n', maxsplit=1)[0],
     long_description=LONG_DESCRIPTION,
     author='Fabian Peter Hammerle',
@@ -41,15 +47,15 @@ setuptools.setup(
     },
     install_requires=[
         # pandas.DataFrame.drop(columns=[...], ...)
-        'pandas>=0.21.0',
+        'pandas>=0.21.0,<1',
     ],
     setup_requires=[
         'setuptools_scm',
     ],
     tests_require=[
-        'pylint>=2.3.0',
-        'pytest',
+        'pylint>=2.3.0,<3',
+        'pytest<5',
         'pytest-cov<3,>=2',
-        'pytest-timeout',
+        'pytest-timeout<2',
     ],
 )

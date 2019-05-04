@@ -15,6 +15,8 @@ pip3 install --user freesurfer-volume-reader
 freesurfer-volume-reader --help
 ```
 
+Releases follow the [semantic versioning](https://semver.org/) scheme. 
+
 ## Usage
 
 ### Freesurfer

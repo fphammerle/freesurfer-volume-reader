@@ -22,6 +22,11 @@ import typing
 
 import pandas
 
+try:
+    from freesurfer_volume_reader.version import __version__
+except ImportError:  # pragma: no cover
+    __version__ = None
+
 
 def parse_version_string(version_string: str) -> typing.Tuple[typing.Union[int, str]]:
     return tuple(int(p) if p.isdigit() else p for p in version_string.split('.'))

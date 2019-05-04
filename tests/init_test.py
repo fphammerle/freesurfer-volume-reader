@@ -1,7 +1,11 @@
 import pytest
 
-from freesurfer_volume_reader import parse_version_string, remove_group_names_from_regex, \
-                                     VolumeFile
+from freesurfer_volume_reader import __version__, parse_version_string, \
+                                     remove_group_names_from_regex, VolumeFile
+
+
+def test_module_version():
+    assert len(__version__) >= len('0.1.0')
 
 
 @pytest.mark.parametrize(('version_string', 'expected_tuple'), [
