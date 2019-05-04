@@ -12,6 +12,7 @@ def generate_freesurfer_mode_label(row):
                      row['analysis_id'].split('_')[0] if row['analysis_id'] else None]
     return ' & '.join(filter(None, mri_sequences))
 
+
 def main():
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--subject', required=True)
