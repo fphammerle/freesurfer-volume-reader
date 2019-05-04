@@ -202,6 +202,16 @@ def test_main_root_dir_filename_regex_combined(capsys):
     )
 
 
+def test_main_no_files_found(capsys):
+    with unittest.mock.patch('sys.argv', ['', '--freesurfer-hipposf-filename-regex', r'^21$',
+                                          '--', SUBJECTS_DIR]):
+        with pytest.raises(ValueError):
+            freesurfer_volume_reader.__main__.main()
+    out, err = capsys.readouterr()
+    assert not out
+    assert not err
+
+
 def test_main_module_script_help():
     subprocess.run(['python', '-m', 'freesurfer_volume_reader', '--help'],
                    check=True)
