@@ -55,6 +55,7 @@ def main():
     if parse_version_string(pandas.__version__) < (0, 23):
         united_volume_frame = pandas.concat(volume_frames, ignore_index=True)
     else:
+        # pylint: disable=unexpected-keyword-arg
         united_volume_frame = pandas.concat(volume_frames, ignore_index=True, sort=False)
     print(united_volume_frame.to_csv(index=False))
 
