@@ -21,10 +21,13 @@ def assert_main_volume_frame_equals(capsys, argv: list, expected_frame: pandas.D
     with unittest.mock.patch('sys.argv', [''] + argv):
         freesurfer_volume_reader.__main__.main()
     out, _ = capsys.readouterr()
+    resulted_frame = pandas.read_csv(io.StringIO(out)).drop(columns=['source_path'])
+    if 'correction' in resulted_frame:
+        resulted_frame['correction'] = resulted_frame['correction'].astype('object')
     assert_volume_frames_equal(
         left=expected_frame,
         # pandas.DataFrame.drop(columns=[...], ...) >= pandas0.21.0
-        right=pandas.read_csv(io.StringIO(out)).drop(columns=['source_path']),
+        right=resulted_frame,
     )
 
 
@@ -174,5 +177,24 @@ def test_main_root_dir_filename_regex_ashs(capsys):
               os.path.join(SUBJECTS_DIR, 'bert')],
         expected_frame=expected_volume_frame[expected_volume_frame['correction']
                                              == 'nogray'].copy(),
+        capsys=capsys,
+    )
+
+
+def test_main_root_dir_filename_regex_combined(capsys):
+    expected_volume_frame = pandas.read_csv(
+        os.path.join(SUBJECTS_DIR, 'alice', 'all-hippocampal-volumes.csv'))
+    expected_volume_frame = expected_volume_frame[
+        # pylint: disable=singleton-comparison
+        (expected_volume_frame['T1_input'] == True)
+        | ((expected_volume_frame['source_type'] == 'ashs')
+           & expected_volume_frame['correction'].isnull())
+    ]
+    assert_main_volume_frame_equals(
+        argv=['--ashs-filename-regex', r'^alice_left_heur_',
+              '--freesurfer-filename-regex', r'hippoSfVolumes-T1.v10.txt$',
+              '--source-types', 'ashs', 'freesurfer',
+              '--', os.path.join(SUBJECTS_DIR, 'alice')],
+        expected_frame=expected_volume_frame.copy(),
         capsys=capsys,
     )
