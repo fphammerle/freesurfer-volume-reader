@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/fphammerle/freesurfer-volume-reader.svg?branch=master)](https://travis-ci.org/fphammerle/freesurfer-volume-reader)
 [![Coverage Status](https://coveralls.io/repos/github/fphammerle/freesurfer-volume-reader/badge.svg?branch=master)](https://coveralls.io/github/fphammerle/freesurfer-volume-reader?branch=master)
+[![Latest PyPI Version](https://img.shields.io/pypi/v/freesurfer-volume-reader.svg)](https://pypi.org/project/freesurfer-volume-reader/#history)
 [![Python Versions](https://img.shields.io/pypi/pyversions/freesurfer-volume-reader.svg)](https://pypi.org/project/freesurfer-volume-reader/)
 
 Python script & library to
