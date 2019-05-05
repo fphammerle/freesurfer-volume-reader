@@ -5,12 +5,13 @@ name = "pypi"
 
 [packages]
 freesurfer-volume-reader = {editable = true, path = "./.."}
-pandas = "*"
-matplotlib = "*"
-seaborn = "*"
+pandas = "<1"
+matplotlib = "<4"
+seaborn = "<1"
+notebook = "<6"
 
 [dev-packages]
-pylint = ">=2.3.0"
+pylint = ">=2.3.0,<3"
 
 [requires]
 python_version = "3"

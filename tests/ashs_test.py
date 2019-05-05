@@ -102,12 +102,14 @@ def test_hippocampal_subfields_volume_file_read_volumes_dataframe_not_found():
     (os.path.join(SUBJECTS_DIR, 'bert'),
      {os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_nogray_volumes.txt'),
       os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_usegray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_heur_volumes.txt'),
       os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_right_corr_nogray_volumes.txt')}),
     (SUBJECTS_DIR,
      {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_heur_volumes.txt'),
       os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_left_corr_nogray_volumes.txt'),
       os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_nogray_volumes.txt'),
       os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_corr_usegray_volumes.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_left_heur_volumes.txt'),
       os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_right_corr_nogray_volumes.txt')}),
 ])
 def test_hippocampal_subfields_volume_file_find(root_dir_path, expected_file_paths):
