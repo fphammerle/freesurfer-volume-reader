@@ -1,0 +1,27 @@
+subfield,volume_mm^3,subject,hemisphere,T1_input,analysis_id,segmentation_mode
+Hippocampal_tail,123.456789,bert,left,True,,T1
+subiculum,234.567891,bert,left,True,,T1
+CA1,34.567891,bert,left,True,,T1
+hippocampal-fissure,345.678912,bert,left,True,,T1
+presubiculum,456.789123,bert,left,True,,T1
+parasubiculum,45.678912,bert,left,True,,T1
+molecular_layer_HP,56.789123,bert,left,True,,T1
+GC-ML-DG,567.891234,bert,left,True,,T1
+CA3,678.912345,bert,left,True,,T1
+CA4,789.123456,bert,left,True,,T1
+fimbria,89.123456,bert,left,True,,T1
+HATA,91.234567,bert,left,True,,T1
+Whole_hippocampus,1234.567899,bert,left,True,,T1
+Hippocampal_tail,124.456789,bert,left,True,T2,T1 & T2
+subiculum,244.567891,bert,left,True,T2,T1 & T2
+CA1,44.567891,bert,left,True,T2,T1 & T2
+hippocampal-fissure,445.678912,bert,left,True,T2,T1 & T2
+presubiculum,456.789124,bert,left,True,T2,T1 & T2
+parasubiculum,45.678912,bert,left,True,T2,T1 & T2
+molecular_layer_HP,56.789124,bert,left,True,T2,T1 & T2
+GC-ML-DG,567.891244,bert,left,True,T2,T1 & T2
+CA3,678.912445,bert,left,True,T2,T1 & T2
+CA4,789.124456,bert,left,True,T2,T1 & T2
+fimbria,89.124456,bert,left,True,T2,T1 & T2
+HATA,91.244567,bert,left,True,T2,T1 & T2
+Whole_hippocampus,1244.567899,bert,left,True,T2,T1 & T2
