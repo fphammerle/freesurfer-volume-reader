@@ -84,7 +84,7 @@ def test_intracranial_volume_file_read_volume_series_single(volume_file_path, ex
          data=[1234560.0, 1543200.0],
          name='intercranial_volume_mm^3',
          index=pandas.Index(data=['bert', 'alice'], name='subject'),
-    )),
+     )),
 ])
 def test_intracranial_volume_file_read_volume_series_concat(volume_file_paths, expected_series):
     volume_series = pandas.concat(
