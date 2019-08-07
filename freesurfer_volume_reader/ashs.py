@@ -34,6 +34,12 @@ class IntracranialVolumeFile(freesurfer_volume_reader.VolumeFile):
     def absolute_path(self):
         return self._absolute_path
 
+    def read_volume_mm3(self) -> float:
+        with open(self.absolute_path, 'r') as volume_file:
+            subject, icv = volume_file.read().rstrip().split(' ')
+            assert subject == self.subject, (subject, self.subject)
+            return float(icv)
+
 
 class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile):
 

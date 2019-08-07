@@ -32,6 +32,27 @@ def test_intracranial_volume_file_init_invalid_filename(volume_file_path):
         IntracranialVolumeFile(path=volume_file_path)
 
 
+@pytest.mark.parametrize(('volume_file_path', 'expected_volume'), [
+    (os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt'), 1234560),
+    (os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt'), 1.23456e06),
+    (os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt'), 1.23456e+06),
+    (os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt'), float('1.23456e+06')),
+    (os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt'), 1543200),
+])
+def test_intracranial_volume_file_read_volume_mm3(volume_file_path, expected_volume):
+    volume_file = IntracranialVolumeFile(path=volume_file_path)
+    assert expected_volume == pytest.approx(volume_file.read_volume_mm3())
+
+
+@pytest.mark.parametrize('volume_file_path', [
+    os.path.join(SUBJECTS_DIR, 'noone', 'final', 'noone_icv.txt'),
+])
+def test_intracranial_volume_file_read_volume_mm3_not_found(volume_file_path):
+    volume_file = IntracranialVolumeFile(path=volume_file_path)
+    with pytest.raises(FileNotFoundError):
+        volume_file.read_volume_mm3()
+
+
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
     ('ashs/final/bert_left_heur_volumes.txt',
      {'subject': 'bert', 'hemisphere': 'left', 'correction': None}),
