@@ -53,6 +53,60 @@ def test_intracranial_volume_file_read_volume_mm3_not_found(volume_file_path):
         volume_file.read_volume_mm3()
 
 
+@pytest.mark.parametrize(('volume_file_path', 'expected_series'), [
+    (os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt'),
+     pandas.Series(
+         data=[1234560.0],
+         name='volume_mm^3',
+         index=pandas.Index(data=['bert'], name='subject'),
+     )),
+    (os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt'),
+     pandas.Series(
+         data=[1543200.0],
+         name='volume_mm^3',
+         index=pandas.Index(data=['alice'], name='subject'),
+     )),
+])
+def test_intracranial_volume_file_read_volume_series_single(volume_file_path, expected_series):
+    volume_file = IntracranialVolumeFile(path=volume_file_path)
+    pandas.testing.assert_series_equal(
+        left=expected_series,
+        right=volume_file.read_volume_series(),
+        check_dtype=True,
+        check_names=True,
+    )
+
+
+@pytest.mark.parametrize(('volume_file_paths', 'expected_series'), [
+    ([os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt'),
+      os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt')],
+     pandas.Series(
+         data=[1234560.0, 1543200.0],
+         name='volume_mm^3',
+         index=pandas.Index(data=['bert', 'alice'], name='subject'),
+     )),
+])
+def test_intracranial_volume_file_read_volume_series_concat(volume_file_paths, expected_series):
+    volume_series = pandas.concat(
+        IntracranialVolumeFile(path=p).read_volume_series()
+        for p in volume_file_paths)
+    pandas.testing.assert_series_equal(
+        left=expected_series,
+        right=volume_series,
+        check_dtype=True,
+        check_names=True,
+    )
+
+
+@pytest.mark.parametrize('volume_file_path', [
+    os.path.join(SUBJECTS_DIR, 'bert', 'final', 'BERT_icv.txt'),
+])
+def test_intracranial_volume_file_read_volume_series_not_found(volume_file_path):
+    volume_file = IntracranialVolumeFile(path=volume_file_path)
+    with pytest.raises(FileNotFoundError):
+        volume_file.read_volume_series()
+
+
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
     ('ashs/final/bert_left_heur_volumes.txt',
      {'subject': 'bert', 'hemisphere': 'left', 'correction': None}),

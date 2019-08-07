@@ -40,6 +40,16 @@ class IntracranialVolumeFile(freesurfer_volume_reader.VolumeFile):
             assert subject == self.subject, (subject, self.subject)
             return float(icv)
 
+    def read_volume_series(self) -> pandas.Series:
+        return pandas.Series(
+            data=[self.read_volume_mm3()],
+            name='volume_mm^3',
+            index=pandas.Index(
+                data=[self.subject],
+                name='subject',
+            ),
+        )
+
 
 class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile):
 
