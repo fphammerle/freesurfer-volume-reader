@@ -21,6 +21,17 @@ def test_intracranial_volume_file_init(volume_file_path, expected_subject):
     assert expected_subject == volume_file.subject
 
 
+@pytest.mark.parametrize('volume_file_path', [
+    '_icv.txt',
+    'bert_ICV.txt',
+    'bert_icv.csv',
+    'bert_ICV.txt.zip',
+])
+def test_intracranial_volume_file_init_invalid_filename(volume_file_path):
+    with pytest.raises(Exception):
+        IntracranialVolumeFile(path=volume_file_path)
+
+
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
     ('ashs/final/bert_left_heur_volumes.txt',
      {'subject': 'bert', 'hemisphere': 'left', 'correction': None}),
