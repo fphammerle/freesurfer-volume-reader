@@ -1,7 +1,8 @@
 import pytest
 
-from freesurfer_volume_reader import __version__, parse_version_string, \
-                                     remove_group_names_from_regex, SubfieldVolumeFile
+from freesurfer_volume_reader import \
+    __version__, parse_version_string, remove_group_names_from_regex, \
+    VolumeFile, SubfieldVolumeFile
 
 
 def test_module_version():
@@ -37,7 +38,22 @@ def test_remove_group_names_from_regex(source_pattern, expected_pattern):
     assert expected_pattern == remove_group_names_from_regex(regex_pattern=source_pattern)
 
 
-class DummyVolumeFile(SubfieldVolumeFile):
+class DummyVolumeFile(VolumeFile):
+
+    # pylint: disable=useless-super-delegation
+
+    @property
+    def absolute_path(self):
+        return super().absolute_path
+
+
+def test_volume_file_abstractmethod():
+    volume_file = DummyVolumeFile()
+    with pytest.raises(NotImplementedError):
+        assert volume_file.absolute_path
+
+
+class DummySubfieldVolumeFile(SubfieldVolumeFile):
 
     # pylint: disable=useless-super-delegation
 
@@ -52,8 +68,8 @@ class DummyVolumeFile(SubfieldVolumeFile):
         return super().read_volumes_dataframe()
 
 
-def test_volume_file_abstractmethod():
-    volume_file = DummyVolumeFile()
+def test_subfield_volume_file_abstractmethod():
+    volume_file = DummySubfieldVolumeFile()
     with pytest.raises(NotImplementedError):
         assert volume_file.absolute_path
     with pytest.raises(NotImplementedError):

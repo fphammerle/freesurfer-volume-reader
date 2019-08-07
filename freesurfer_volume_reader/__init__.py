@@ -36,21 +36,13 @@ def remove_group_names_from_regex(regex_pattern: str) -> str:
     return re.sub(r'\?P<.+?>', '', regex_pattern)
 
 
-class SubfieldVolumeFile(metaclass=abc.ABCMeta):
+class VolumeFile(metaclass=abc.ABCMeta):
 
     FILENAME_REGEX = NotImplemented
 
     @property
     @abc.abstractmethod
     def absolute_path(self):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def read_volumes_mm3(self) -> typing.Dict[str, float]:
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def read_volumes_dataframe(self) -> pandas.DataFrame:
         raise NotImplementedError()
 
     @classmethod
@@ -62,3 +54,14 @@ class SubfieldVolumeFile(metaclass=abc.ABCMeta):
         for dirpath, _, filenames in os.walk(root_dir_path):
             for filename in filter(filename_regex.search, filenames):
                 yield cls(path=os.path.join(dirpath, filename))
+
+
+class SubfieldVolumeFile(VolumeFile):
+
+    @abc.abstractmethod
+    def read_volumes_mm3(self) -> typing.Dict[str, float]:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def read_volumes_dataframe(self) -> pandas.DataFrame:
+        raise NotImplementedError()
