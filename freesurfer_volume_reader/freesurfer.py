@@ -56,10 +56,7 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
         return subfield_volumes
 
     def read_volumes_dataframe(self) -> pandas.DataFrame:
-        volumes_frame = pandas.DataFrame([
-            {'subfield': s, 'volume_mm^3': v}
-            for s, v in self.read_volumes_mm3().items()
-        ])
+        volumes_frame = self._read_volume_series().reset_index()
         volumes_frame['subject'] = self.subject
         volumes_frame['hemisphere'] = self.hemisphere
         # volumes_frame['hemisphere'] = volumes_frame['hemisphere'].astype('category')

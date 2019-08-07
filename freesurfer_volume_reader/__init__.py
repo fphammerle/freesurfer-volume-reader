@@ -65,3 +65,14 @@ class SubfieldVolumeFile(VolumeFile):
     @abc.abstractmethod
     def read_volumes_dataframe(self) -> pandas.DataFrame:
         raise NotImplementedError()
+
+    def _read_volume_series(self) -> pandas.Series:
+        subfield_volumes = self.read_volumes_mm3()
+        return pandas.Series(
+            data=list(subfield_volumes.values()),
+            name='volume_mm^3',
+            index=pandas.Index(
+                data=subfield_volumes.keys(),
+                name='subfield',
+            ),
+        )
