@@ -57,13 +57,13 @@ def test_intracranial_volume_file_read_volume_mm3_not_found(volume_file_path):
     (os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt'),
      pandas.Series(
          data=[1234560.0],
-         name='volume_mm^3',
+         name='intercranial_volume_mm^3',
          index=pandas.Index(data=['bert'], name='subject'),
      )),
     (os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt'),
      pandas.Series(
          data=[1543200.0],
-         name='volume_mm^3',
+         name='intercranial_volume_mm^3',
          index=pandas.Index(data=['alice'], name='subject'),
      )),
 ])
@@ -82,9 +82,9 @@ def test_intracranial_volume_file_read_volume_series_single(volume_file_path, ex
       os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt')],
      pandas.Series(
          data=[1234560.0, 1543200.0],
-         name='volume_mm^3',
+         name='intercranial_volume_mm^3',
          index=pandas.Index(data=['bert', 'alice'], name='subject'),
-     )),
+    )),
 ])
 def test_intracranial_volume_file_read_volume_series_concat(volume_file_paths, expected_series):
     volume_series = pandas.concat(
@@ -117,8 +117,10 @@ def test_intracranial_volume_file_read_volume_series_not_found(volume_file_path)
       os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt')}),
 ])
 def test_intracranial_volume_file_find(root_dir_path, expected_file_paths):
-    volume_files_iterator = IntracranialVolumeFile.find(root_dir_path=root_dir_path)
-    assert expected_file_paths == set(f.absolute_path for f in volume_files_iterator)
+    volume_files_iterator = IntracranialVolumeFile.find(
+        root_dir_path=root_dir_path)
+    assert expected_file_paths == set(
+        f.absolute_path for f in volume_files_iterator)
 
 
 @pytest.mark.parametrize(('root_dir_path', 'filename_pattern', 'expected_file_paths'), [
@@ -137,7 +139,8 @@ def test_intracranial_volume_file_find_pattern(
         root_dir_path, filename_pattern, expected_file_paths):
     volume_files_iterator = IntracranialVolumeFile.find(
         root_dir_path=root_dir_path, filename_regex=re.compile(filename_pattern))
-    assert expected_file_paths == set(f.absolute_path for f in volume_files_iterator)
+    assert expected_file_paths == set(
+        f.absolute_path for f in volume_files_iterator)
 
 
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
