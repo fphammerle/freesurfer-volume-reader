@@ -20,7 +20,7 @@ import pandas
 import freesurfer_volume_reader
 
 
-class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.VolumeFile):
+class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile):
 
     # https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
     FILENAME_PATTERN = r'^(?P<h>[lr])h\.hippoSfVolumes' \

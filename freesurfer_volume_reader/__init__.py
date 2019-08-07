@@ -36,7 +36,7 @@ def remove_group_names_from_regex(regex_pattern: str) -> str:
     return re.sub(r'\?P<.+?>', '', regex_pattern)
 
 
-class VolumeFile(metaclass=abc.ABCMeta):
+class SubfieldVolumeFile(metaclass=abc.ABCMeta):
 
     FILENAME_REGEX = NotImplemented
 
@@ -56,7 +56,7 @@ class VolumeFile(metaclass=abc.ABCMeta):
     @classmethod
     def find(cls, root_dir_path: str,
              filename_regex: typing.Optional[typing.Pattern] = None,
-             ) -> typing.Iterator['VolumeFile']:
+             ) -> typing.Iterator['SubfieldVolumeFile']:
         if not filename_regex:
             filename_regex = cls.FILENAME_REGEX
         for dirpath, _, filenames in os.walk(root_dir_path):

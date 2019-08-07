@@ -20,7 +20,7 @@ import pandas
 import freesurfer_volume_reader
 
 
-class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.VolumeFile):
+class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile):
 
     # https://sites.google.com/site/hipposubfields/tutorial#TOC-Viewing-ASHS-Segmentation-Results
     FILENAME_PATTERN = r'^(?P<s>\w+)_(?P<h>left|right)' \

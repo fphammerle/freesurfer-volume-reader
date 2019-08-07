@@ -1,7 +1,7 @@
 import pytest
 
 from freesurfer_volume_reader import __version__, parse_version_string, \
-                                     remove_group_names_from_regex, VolumeFile
+                                     remove_group_names_from_regex, SubfieldVolumeFile
 
 
 def test_module_version():
@@ -37,7 +37,7 @@ def test_remove_group_names_from_regex(source_pattern, expected_pattern):
     assert expected_pattern == remove_group_names_from_regex(regex_pattern=source_pattern)
 
 
-class DummyVolumeFile(VolumeFile):
+class DummyVolumeFile(SubfieldVolumeFile):
 
     # pylint: disable=useless-super-delegation
 
