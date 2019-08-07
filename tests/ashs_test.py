@@ -107,6 +107,39 @@ def test_intracranial_volume_file_read_volume_series_not_found(volume_file_path)
         volume_file.read_volume_series()
 
 
+@pytest.mark.parametrize(('root_dir_path', 'expected_file_paths'), [
+    (os.path.join(SUBJECTS_DIR, 'bert'),
+     {os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt')}),
+    (os.path.join(SUBJECTS_DIR, 'alice'),
+     {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt')}),
+    (SUBJECTS_DIR,
+     {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt')}),
+])
+def test_intracranial_volume_file_find(root_dir_path, expected_file_paths):
+    volume_files_iterator = IntracranialVolumeFile.find(root_dir_path=root_dir_path)
+    assert expected_file_paths == set(f.absolute_path for f in volume_files_iterator)
+
+
+@pytest.mark.parametrize(('root_dir_path', 'filename_pattern', 'expected_file_paths'), [
+    (SUBJECTS_DIR,
+     r'^\w{4,6}_icv.txt$',
+     {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt'),
+      os.path.join(SUBJECTS_DIR, 'bert', 'final', 'bert_icv.txt')}),
+    (SUBJECTS_DIR,
+     r'^\w{5,6}_icv.txt$',
+     {os.path.join(SUBJECTS_DIR, 'alice', 'final', 'alice_icv.txt')}),
+    (SUBJECTS_DIR,
+     r'^\w{7,}_icv.txt$',
+     set()),
+])
+def test_intracranial_volume_file_find_pattern(
+        root_dir_path, filename_pattern, expected_file_paths):
+    volume_files_iterator = IntracranialVolumeFile.find(
+        root_dir_path=root_dir_path, filename_regex=re.compile(filename_pattern))
+    assert expected_file_paths == set(f.absolute_path for f in volume_files_iterator)
+
+
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
     ('ashs/final/bert_left_heur_volumes.txt',
      {'subject': 'bert', 'hemisphere': 'left', 'correction': None}),
