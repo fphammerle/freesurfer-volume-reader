@@ -9,6 +9,13 @@ https://sites.google.com/site/hipposubfields/home
 >>>     print(volume_file.subject, volume_file.hemisphere, volume_file.correction)
 >>>     print(volume_file.read_volumes_mm3())
 >>>     print(volume_file.read_volumes_dataframe())
+
+>>> from freesurfer_volume_reader.ashs import IntracranialVolumeFile
+>>>
+>>> for volume_file in IntracranialVolumeFile('/my/ashs/subjects'):
+>>>     print(volume_file.subject)
+>>>     print(volume_file.read_volume_mm3())
+>>>     print(volume_file.read_volume_series())
 """
 
 import os
