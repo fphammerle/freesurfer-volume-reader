@@ -20,6 +20,21 @@ import pandas
 import freesurfer_volume_reader
 
 
+class IntracranialVolumeFile(freesurfer_volume_reader.VolumeFile):
+
+    FILENAME_REGEX = re.compile(r'^(?P<s>\w+)_icv.txt$')
+
+    def __init__(self, path: str):
+        self._absolute_path = os.path.abspath(path)
+        filename_match = self.FILENAME_REGEX.match(os.path.basename(path))
+        assert filename_match, self._absolute_path
+        self.subject = filename_match.groupdict()['s']
+
+    @property
+    def absolute_path(self):
+        return self._absolute_path
+
+
 class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile):
 
     # https://sites.google.com/site/hipposubfields/tutorial#TOC-Viewing-ASHS-Segmentation-Results

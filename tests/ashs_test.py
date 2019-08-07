@@ -4,9 +4,21 @@ import re
 import pandas
 import pytest
 
-from freesurfer_volume_reader.ashs import HippocampalSubfieldsVolumeFile
+from freesurfer_volume_reader.ashs import IntracranialVolumeFile, HippocampalSubfieldsVolumeFile
 
 from conftest import SUBJECTS_DIR, assert_volume_frames_equal
+
+
+@pytest.mark.parametrize(('volume_file_path', 'expected_subject'), [
+    ('bert_icv.txt', 'bert'),
+    ('final/bert_icv.txt', 'bert'),
+    ('ashs/subjects/bert/final/bert_icv.txt', 'bert'),
+    ('ashs/subjects/alice/final/long_subject_name_42_icv.txt', 'long_subject_name_42'),
+])
+def test_intracranial_volume_file_init(volume_file_path, expected_subject):
+    volume_file = IntracranialVolumeFile(path=volume_file_path)
+    assert os.path.abspath(volume_file_path) == volume_file.absolute_path
+    assert expected_subject == volume_file.subject
 
 
 @pytest.mark.parametrize(('volume_file_path', 'expected_attrs'), [
