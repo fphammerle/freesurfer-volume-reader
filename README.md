@@ -72,6 +72,17 @@ for volume_file in ashs.HippocampalSubfieldsVolumeFile.find('/my/ashs/subjects')
     print(volume_file.read_volumes_dataframe())
 ```
 
+#### Intracranial Volume
+
+```python
+from freesurfer_volume_reader import ashs
+
+for volume_file in ashs.IntracranialVolumeFile.find('/my/ashs/subjects'):
+    print(volume_file.subject)
+    print(volume_file.read_volume_mm3())
+    print(volume_file.read_volume_series())
+```
+
 ### Freesurfer & ASHS
 
 ```sh
