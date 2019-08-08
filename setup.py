@@ -2,19 +2,19 @@ import os
 
 import setuptools
 
-import freesurfer_volume_reader
 
-
-LONG_DESCRIPTION = freesurfer_volume_reader.__doc__.strip()
+with open('README.rst', 'r') as readme:
+    LONG_DESCRIPTION = readme.read()
 
 setuptools.setup(
     name='freesurfer-volume-reader',
     use_scm_version={
         'write_to': os.path.join('freesurfer_volume_reader', 'version.py'),
-        # `version` triggers pylint C0103 
+        # `version` triggers pylint C0103
         'write_to_template': "__version__ = '{version}'\n",
     },
-    description=LONG_DESCRIPTION.split(sep='\n', maxsplit=1)[0],
+    description='Python script & library to read hippocampal subfield volumes'
+        'computed by Freesurfer & ASHS',
     long_description=LONG_DESCRIPTION,
     author='Fabian Peter Hammerle',
     author_email='fabian@hammerle.me',
