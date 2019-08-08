@@ -9,6 +9,8 @@ freesurfer-volume-reader
    :target: https://pypi.org/project/freesurfer-volume-reader/#history
 .. image:: https://img.shields.io/pypi/pyversions/freesurfer-volume-reader.svg
    :target: https://pypi.org/project/freesurfer-volume-reader/
+.. image:: https://zenodo.org/badge/183625692.svg
+   :target: https://zenodo.org/badge/latestdoi/183625692
 
 Python script & library to read hippocampal subfield volumes computed by
 Freesurfer & ASHS
