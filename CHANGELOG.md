@@ -6,4 +6,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- support `pandas` `v1.*`
 - package metadata: added `python3.8` classifier

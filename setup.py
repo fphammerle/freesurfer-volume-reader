@@ -47,11 +47,8 @@ setuptools.setup(
         ],
     },
     install_requires=[
-        # pandas.DataFrame.drop(columns=[...], ...)
-        'pandas>=0.21.0,<1',
-    ],
-    setup_requires=[
-        'setuptools_scm',
+        # >=0.21.0 pandas.DataFrame.drop(columns=[...], ...)
+        "pandas>=0.21.0,<2"
     ],
     tests_require=[
         'pylint>=2.3.0,<3',
