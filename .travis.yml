@@ -62,6 +62,7 @@ install:
     pipenv install --selective-upgrade "pandas==$PANDAS_VERSION";
   fi
 - pipenv graph
+- find "$(pipenv --venv)" | grep freesurfer
 
 script:
 - pipenv run pylint freesurfer_volume_reader tests/*
