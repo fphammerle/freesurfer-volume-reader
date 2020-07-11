@@ -50,6 +50,7 @@ setuptools.setup(
         # >=0.21.0 pandas.DataFrame.drop(columns=[...], ...)
         "pandas>=0.21.0,<2"
     ],
+    setup_requires=["setuptools_scm"],
     tests_require=[
         'pylint>=2.3.0,<3',
         'pytest<5',

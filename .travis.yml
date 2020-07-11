@@ -62,8 +62,6 @@ install:
     pipenv install --selective-upgrade "pandas==$PANDAS_VERSION";
   fi
 - pipenv graph
-- cat "$(pipenv --venv)"/lib/python*/site-packages/freesurfer-volume-reader.egg-link
-- (set -x; ls -la $TRAVIS_BUILD_DIR/freesurfer_volume_reader/)
 
 script:
 - pipenv run pylint freesurfer_volume_reader tests/*
