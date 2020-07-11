@@ -6,13 +6,17 @@ name = "pypi"
 [packages]
 freesurfer-volume-reader = {editable = true, path = "."}
 
+# python3.5
+numpy = "<1.19.0"
+
 [dev-packages]
-# workaround https://github.com/pytest-dev/pytest/issues/3953
-pathlib2 = {version = "*", markers="python_version < '3.6'"}
 pylint = ">=2.3.0,<3"
 pytest = "<5"
 pytest-cov = "<3,>=2"
 pytest-timeout = "<2"
+
+# workaround https://github.com/pytest-dev/pytest/issues/3953
+pathlib2 = {version = "*", markers="python_version < '3.6'"}
 # zipp v2.0.0 dropped support for python3.5
 # https://github.com/jaraco/zipp/commit/05a3c52b4d41690e0471a2e283cffb500dc0329a
 zipp = "<2"
