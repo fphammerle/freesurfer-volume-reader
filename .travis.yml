@@ -31,7 +31,7 @@ matrix:
 
 install:
 - pip install pipenv==2020.6.2
-- pipenv sync --dev
+- pipenv install --python "$TRAVIS_PYTHON_VERSION" --deploy --dev
 - if [ ! -z "$PANDAS_VERSION" ]; then
     pipenv install --selective-upgrade "pandas==$PANDAS_VERSION";
   fi
