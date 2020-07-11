@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring
+
 import pytest
 
 from freesurfer_volume_reader import (

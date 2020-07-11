@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring
+
 import io
 import os
 import subprocess

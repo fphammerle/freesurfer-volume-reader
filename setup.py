@@ -11,7 +11,8 @@ setuptools.setup(
     use_scm_version={
         "write_to": os.path.join("freesurfer_volume_reader", "version.py"),
         # `version` triggers pylint C0103
-        "write_to_template": "__version__ = '{version}'\n",
+        "write_to_template": "# pylint: disable=missing-module-docstring\n"
+        + "__version__ = '{version}'\n",
     },
     description="Python script & library to read hippocampal subfield volumes"
     "computed by Freesurfer & ASHS",

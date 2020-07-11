@@ -1,7 +1,8 @@
 [MESSAGES CONTROL]
 
 disable=bad-continuation, # black
-        missing-docstring
+        missing-class-docstring,
+        missing-function-docstring
 
 
 [SIMILARITIES]
