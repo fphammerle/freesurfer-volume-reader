@@ -122,9 +122,10 @@ def test_hippocampal_subfields_volume_file_init(volume_file_path, expected_attrs
         "bert/mri/lh.hippoSfVolumes-T1.v9.txt",
         "bert/mri/lh.hippoSfVolumes.v10.txt",
         "bert/mri/mh.hippoSfVolumes-T1.v10.txt",
+        "bert_left_corr_nogray_volumes.txt",
     ],
 )
-def test_hippocampal_subfields_volume_file_init_invalid(volume_file_path):
+def test_hippocampal_subfields_volume_file_init_invalid_path(volume_file_path):
     with pytest.raises(Exception):
         HippocampalSubfieldsVolumeFile(path=volume_file_path)
 
@@ -156,6 +157,7 @@ def test_hippocampal_subfields_volume_file_read_volumes_mm3(
     volume_file_path, expected_volumes
 ):
     volume_file = HippocampalSubfieldsVolumeFile(path=volume_file_path)
+    assert volume_file.t1_input
     assert expected_volumes == volume_file.read_volumes_mm3()
 
 
