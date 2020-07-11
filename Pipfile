@@ -17,6 +17,8 @@ pytest-timeout = "<2"
 
 # workaround https://github.com/pytest-dev/pytest/issues/3953
 pathlib2 = {version = "*", markers="python_version < '3.6'"}
+# fix pluggy/manager.py (v0.13.1): import importlib_metadata => ModuleNotFoundError
+importlib_metadata = {version = "*", markers="python_version < '3.8'"}
 # zipp v2.0.0 dropped support for python3.5
 # https://github.com/jaraco/zipp/commit/05a3c52b4d41690e0471a2e283cffb500dc0329a
 zipp = "<2"
