@@ -3,7 +3,6 @@ language: python
 python:
 - 3.5
 - 3.6
-- 3.6-dev
 - 3.7
 - 3.7-dev
 
@@ -31,7 +30,7 @@ matrix:
     env: PANDAS_VERSION=0.22.*
 
 install:
-- pip install pipenv
+- pip install pipenv==2020.6.2
 - pipenv sync --dev
 - if [ ! -z "$PANDAS_VERSION" ]; then
     pipenv install --selective-upgrade "pandas==$PANDAS_VERSION";
