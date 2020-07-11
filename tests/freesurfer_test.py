@@ -274,10 +274,13 @@ def test_hippocampal_subfields_volume_file_read_volumes_dataframe_not_found():
     ],
 )
 def test_hippocampal_subfields_volume_file_find(root_dir_path, expected_file_paths):
-    volume_files_iterator = HippocampalSubfieldsVolumeFile.find(
-        root_dir_path=root_dir_path
+    volume_files = list(
+        HippocampalSubfieldsVolumeFile.find(root_dir_path=root_dir_path)
     )
-    assert expected_file_paths == set(f.absolute_path for f in volume_files_iterator)
+    assert all(
+        "hippoSfVolumes" in os.path.basename(f.absolute_path) for f in volume_files
+    )
+    assert expected_file_paths == set(f.absolute_path for f in volume_files)
 
 
 @pytest.mark.parametrize(
