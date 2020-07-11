@@ -52,10 +52,5 @@ setuptools.setup(
         "pandas>=0.21.0,<2"
     ],
     setup_requires=["setuptools_scm"],
-    tests_require=[
-        "pylint>=2.3.0,<3",
-        "pytest<5",
-        "pytest-cov<3,>=2",
-        "pytest-timeout<2",
-    ],
+    tests_require=["pytest<5", "pytest-timeout<2"],
 )
