@@ -10,10 +10,10 @@ freesurfer-volume-reader = {editable = true, path = "."}
 numpy = "<1.19.0"
 
 [dev-packages]
-pylint = ">=2.3.0,<3"
-pytest = "<5"
-pytest-cov = "<3,>=2"
-pytest-timeout = "<2"
+pylint = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-timeout = "*"
 
 # workaround https://github.com/pytest-dev/pytest/issues/3953
 pathlib2 = {version = "*", markers="python_version < '3.6'"}
