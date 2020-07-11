@@ -29,11 +29,11 @@ except ImportError:  # pragma: no cover
 
 
 def parse_version_string(version_string: str) -> typing.Tuple[typing.Union[int, str]]:
-    return tuple(int(p) if p.isdigit() else p for p in version_string.split('.'))
+    return tuple(int(p) if p.isdigit() else p for p in version_string.split("."))
 
 
 def remove_group_names_from_regex(regex_pattern: str) -> str:
-    return re.sub(r'\?P<.+?>', '', regex_pattern)
+    return re.sub(r"\?P<.+?>", "", regex_pattern)
 
 
 class VolumeFile(metaclass=abc.ABCMeta):
@@ -46,9 +46,9 @@ class VolumeFile(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @classmethod
-    def find(cls, root_dir_path: str,
-             filename_regex: typing.Optional[typing.Pattern] = None,
-             ) -> typing.Iterator['SubfieldVolumeFile']:
+    def find(
+        cls, root_dir_path: str, filename_regex: typing.Optional[typing.Pattern] = None
+    ) -> typing.Iterator["SubfieldVolumeFile"]:
         if not filename_regex:
             filename_regex = cls.FILENAME_REGEX
         for dirpath, _, filenames in os.walk(root_dir_path):
@@ -57,7 +57,6 @@ class VolumeFile(metaclass=abc.ABCMeta):
 
 
 class SubfieldVolumeFile(VolumeFile):
-
     @abc.abstractmethod
     def read_volumes_mm3(self) -> typing.Dict[str, float]:
         raise NotImplementedError()
@@ -70,9 +69,6 @@ class SubfieldVolumeFile(VolumeFile):
         subfield_volumes = self.read_volumes_mm3()
         return pandas.Series(
             data=list(subfield_volumes.values()),
-            name='volume_mm^3',
-            index=pandas.Index(
-                data=subfield_volumes.keys(),
-                name='subfield',
-            ),
+            name="volume_mm^3",
+            index=pandas.Index(data=subfield_volumes.keys(), name="subfield"),
         )
