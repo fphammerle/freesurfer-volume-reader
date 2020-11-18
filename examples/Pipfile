@@ -8,7 +8,7 @@ freesurfer-volume-reader = {editable = true, path = "./.."}
 pandas = "<1"
 matplotlib = "<4"
 seaborn = "<1"
-notebook = "<6"
+notebook = "<7"
 
 [dev-packages]
 pylint = ">=2.3.0,<3"
