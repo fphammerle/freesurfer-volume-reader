@@ -56,13 +56,16 @@ class DummyVolumeFile(VolumeFile):
 
     # pylint: disable=useless-super-delegation
 
+    def __init__(self, path: str) -> None:
+        super().__init__(path=path)
+
     @property
     def absolute_path(self):
         return super().absolute_path
 
 
 def test_volume_file_abstractmethod():
-    volume_file = DummyVolumeFile()
+    volume_file = DummyVolumeFile(path="dummy")
     with pytest.raises(NotImplementedError):
         assert volume_file.absolute_path
 
@@ -70,6 +73,9 @@ def test_volume_file_abstractmethod():
 class DummySubfieldVolumeFile(SubfieldVolumeFile):
 
     # pylint: disable=useless-super-delegation
+
+    def __init__(self, path: str) -> None:
+        super().__init__(path=path)
 
     @property
     def absolute_path(self):
@@ -83,7 +89,7 @@ class DummySubfieldVolumeFile(SubfieldVolumeFile):
 
 
 def test_subfield_volume_file_abstractmethod():
-    volume_file = DummySubfieldVolumeFile()
+    volume_file = DummySubfieldVolumeFile(path="subfield-dummy")
     with pytest.raises(NotImplementedError):
         assert volume_file.absolute_path
     with pytest.raises(NotImplementedError):

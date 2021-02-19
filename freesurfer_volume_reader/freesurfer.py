@@ -44,6 +44,7 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
         self.hemisphere = self.FILENAME_HEMISPHERE_PREFIX_MAP[filename_groups["h"]]
         self.t1_input = filename_groups["T1"] is not None
         self.analysis_id = filename_groups["analysis_id"]
+        super().__init__(path=path)
 
     @property
     def absolute_path(self):

@@ -36,6 +36,7 @@ class IntracranialVolumeFile(freesurfer_volume_reader.VolumeFile):
         filename_match = self.FILENAME_REGEX.match(os.path.basename(path))
         assert filename_match, self._absolute_path
         self.subject = filename_match.groupdict()["s"]
+        super().__init__(path=path)
 
     @property
     def absolute_path(self):
@@ -72,6 +73,7 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
         self.subject = filename_groups["s"]
         self.hemisphere = filename_groups["h"]
         self.correction = filename_groups["c"]
+        super().__init__(path=path)
 
     @property
     def absolute_path(self):

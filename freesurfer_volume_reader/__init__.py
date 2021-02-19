@@ -28,7 +28,9 @@ except ImportError:  # pragma: no cover
     __version__ = None
 
 
-def parse_version_string(version_string: str) -> typing.Tuple[typing.Union[int, str]]:
+def parse_version_string(
+    version_string: str,
+) -> typing.Tuple[typing.Union[int, str], ...]:
     return tuple(int(p) if p.isdigit() else p for p in version_string.split("."))
 
 
@@ -38,7 +40,11 @@ def remove_group_names_from_regex(regex_pattern: str) -> str:
 
 class VolumeFile(metaclass=abc.ABCMeta):
 
-    FILENAME_REGEX = NotImplemented
+    FILENAME_REGEX = NotImplemented  # type: typing.Pattern[str]
+
+    @abc.abstractmethod
+    def __init__(self, path: str) -> None:
+        pass
 
     @property
     @abc.abstractmethod
@@ -48,8 +54,8 @@ class VolumeFile(metaclass=abc.ABCMeta):
     @classmethod
     def find(
         cls, root_dir_path: str, filename_regex: typing.Optional[typing.Pattern] = None
-    ) -> typing.Iterator["SubfieldVolumeFile"]:
-        if not filename_regex:
+    ) -> typing.Iterator["VolumeFile"]:
+        if filename_regex is None:
             filename_regex = cls.FILENAME_REGEX
         for dirpath, _, filenames in os.walk(root_dir_path):
             for filename in filter(filename_regex.search, filenames):
