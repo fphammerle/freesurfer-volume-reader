@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.0] - 2020-07-11
 ### Added
 - support `pandas` `v1.*`
-- package metadata: added `python3.8` classifier
 
 ## [2.0.0] - 2019-08-08
 ### Changed
