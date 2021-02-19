@@ -83,9 +83,13 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
             for line in volume_file.read().rstrip().split("\n"):
                 # > echo $ASHS_SUBJID $side $SUB $NBODY $VSUB >> $FNBODYVOL
                 # https://github.com/pyushkevich/ashs/blob/515ff7c2f50928adabc4e64bded9a7e76fc750b1/bin/ashs_extractstats_qsub.sh#L94
-                subject, hemisphere, subfield_name, slices_number_str, volume_mm3_str = line.split(
-                    " "
-                )
+                (
+                    subject,
+                    hemisphere,
+                    subfield_name,
+                    slices_number_str,
+                    volume_mm3_str,
+                ) = line.split(" ")
                 assert self.subject == subject
                 assert self.hemisphere == hemisphere
                 assert int(slices_number_str) >= 0

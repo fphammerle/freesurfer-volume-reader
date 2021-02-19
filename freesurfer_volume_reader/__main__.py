@@ -21,7 +21,7 @@ from freesurfer_volume_reader import (
 
 
 def concat_dataframes(
-    dataframes: typing.Iterable[pandas.DataFrame]
+    dataframes: typing.Iterable[pandas.DataFrame],
 ) -> pandas.DataFrame:  # pragma: no cover
     # pylint: disable=unexpected-keyword-arg
     if parse_version_string(pandas.__version__) < (0, 23):

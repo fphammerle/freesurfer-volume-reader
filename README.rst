@@ -1,8 +1,10 @@
 freesurfer-volume-reader
 ========================
 
-.. image:: https://travis-ci.org/fphammerle/freesurfer-volume-reader.svg?branch=master
-   :target: https://travis-ci.org/fphammerle/freesurfer-volume-reader
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/psf/black
+.. image:: https://github.com/fphammerle/freesurfer-volume-reader/workflows/tests/badge.svg
+   :target: https://github.com/fphammerle/freesurer-volume-reader/actions
 .. image:: https://coveralls.io/repos/github/fphammerle/freesurfer-volume-reader/badge.svg?branch=master
    :target: https://coveralls.io/github/fphammerle/freesurfer-volume-reader?branch=master
 .. image:: https://img.shields.io/pypi/v/freesurfer-volume-reader.svg
