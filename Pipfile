@@ -11,17 +11,14 @@ numpy = "<1.19.0"
 
 [dev-packages]
 pylint = "*"
+pylint-import-requirements = "*"
 #pytest = "*"
 pytest-cov = "*"
 pytest-timeout = "*"
 
 # python3.5 compatibility
-# fix pluggy/manager.py (v0.13.1) on python<3.8: import importlib_metadata => ModuleNotFoundError
-# <2 for:
-# > pkg_resources.VersionConflict: (importlib-metadata 2.1.1 (/home/travis/virtualenv/python3.5.10/lib/python3.5/site-packages),
-# > Requirement.parse('importlib-metadata<2,>=0.12; python_version < "3.8"'))
-# <3 for "python_requires" https://github.com/python/importlib_metadata/commit/107f9029fd5807c6579b881db19e11a0488f0675
-importlib-metadata = {version = "<2,<3", markers="python_version < '3.8'"}
+# https://github.com/python/importlib_metadata/commit/107f9029fd5807c6579b881db19e11a0488f0675
+importlib-metadata = "<3"
 isort = "<5"
 # workaround https://github.com/pytest-dev/pytest/issues/3953
 pathlib2 = {version = "*", markers="python_version < '3.6'"}
