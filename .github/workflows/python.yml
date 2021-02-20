@@ -24,7 +24,7 @@ jobs:
     - uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - run: pip install --upgrade pipenv==2020.11.15
+    - run: pip install --upgrade pipenv==2020.8.13
     - run: pipenv install --python "$PYTHON_VERSION" --deploy --dev
       env:
         PYTHON_VERSION: ${{ matrix.python-version }}
@@ -130,3 +130,35 @@ jobs:
     - run: coveralls
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+  test-examples: # sync with https://github.com/fphammerle/freesurfer-surface/blob/dev/.github/workflows/python.yml#L73
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python-version:
+        #- 3.5 TODO
+        #- 3.6 TODO
+        - 3.7
+        #- 3.8 TODO
+        #- 3.9 TODO
+      fail-fast: false
+    defaults:
+      run:
+        working-directory: examples/
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - run: pip install --upgrade pipenv==2020.8.13
+    - run: pipenv install --python "$PYTHON_VERSION" --deploy --dev
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
+    - run: pipenv graph
+    # > the default behaviour is to abort conversion [...] if one of the cells throws an error
+    - run: pipenv run jupyter nbconvert --execute --inplace *.ipynb
+    # revert line specifying version of python interpreter
+    - run: sudo apt-get update
+    - run: sudo apt-get install --yes --no-install-recommends patchutils
+    - run: git diff --unified=0 | grepdiff --output-matching=hunk '^   "version":' | patch --reverse
+    - run: git diff --unified=0 | grepdiff --output-matching=hunk 'data:image/png;base64,' | patch --reverse
+    - run: git diff --exit-code
