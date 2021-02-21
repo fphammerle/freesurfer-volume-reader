@@ -138,8 +138,8 @@ jobs:
         - 3.5
         - 3.6
         - 3.7
-        #- 3.8 TODO
-        #- 3.9 TODO
+        - 3.8
+        - 3.9
       fail-fast: false
     defaults:
       run:
@@ -153,6 +153,9 @@ jobs:
     - run: pipenv install --python "$PYTHON_VERSION" --deploy --dev
       env:
         PYTHON_VERSION: ${{ matrix.python-version }}
+    # > RuntimeError: module compiled against API version 0xe but this version of numpy is 0xd
+    - run: python3 -c 'import sys; sys.exit(sys.version_info >= (3, 8))'
+        || pipenv run pip install --no-deps numpy==1.20.1
     - run: pipenv graph
     # > the default behaviour is to abort conversion [...] if one of the cells throws an error
     - run: pipenv run jupyter nbconvert --execute --inplace *.ipynb
