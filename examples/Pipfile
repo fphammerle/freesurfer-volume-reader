@@ -11,10 +11,15 @@ seaborn = "*"
 notebook = "*"
 
 # workaround pipenv expectedly adding "python_version >= '3.7'" marker:
-# >  File "/home/runner/.local/share/virtualenvs/examples-bH_l4rXc/lib/python3.5/site-packages/nbconvert/exporters/base.py", line 10, in <module>
-# >    from traitlets.log import get_logger
-# >ImportError: No module named 'traitlets'
+# >   File "/home/runner/.local/share/virtualenvs/examples-bH_l4rXc/lib/python3.5/site-packages/nbconvert/exporters/base.py", line 10, in <module>
+# >     from traitlets.log import get_logger
+# > ImportError: No module named 'traitlets'
 traitlets = "*"
+# workaround pipenv adding "python_full_version >= '3.6.1'" marker:
+# >   File "/home/runner/.local/share/virtualenvs/examples-bH_l4rXc/lib/python3.5/site-packages/IPython/terminal/interactiveshell.py", line 18, in <module>
+# >     from prompt_toolkit.enums import DEFAULT_BUFFER, EditingMode
+# > ImportError: No module named 'prompt_toolkit'
+prompt-toolkit = "*"
 
 [requires]
 python_version = "3"
