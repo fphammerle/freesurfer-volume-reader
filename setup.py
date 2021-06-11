@@ -13,7 +13,7 @@ setuptools.setup(
         # `version` triggers pylint C0103
         # 2 newlines after import & 2 spaces before # for black
         "write_to_template": "# pylint: disable=missing-module-docstring\nimport typing\n\n"
-        + '__version__ = "{version}"  # type: typing.Optional[str]\n',
+        + '__version__: typing.Optional[str] = "{version}"\n',
     },
     description="Python script & library to read hippocampal subfield volumes"
     "computed by Freesurfer & ASHS",
@@ -34,7 +34,6 @@ setuptools.setup(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Healthcare Industry",
         "Intended Audience :: Science/Research",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -49,6 +48,7 @@ setuptools.setup(
             "freesurfer-volume-reader = freesurfer_volume_reader.__main__:main"
         ]
     },
+    python_requires=">=3.6",
     install_requires=[
         # >=0.21.0 pandas.DataFrame.drop(columns=[...], ...)
         "pandas>=0.21.0,<2"

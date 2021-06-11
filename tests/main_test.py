@@ -13,6 +13,7 @@ import pytest
 import freesurfer_volume_reader
 import freesurfer_volume_reader.__main__
 
+# pylint: disable=wrong-import-order; false positive
 from conftest import SUBJECTS_DIR, assert_volume_frames_equal
 
 

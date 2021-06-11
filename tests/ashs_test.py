@@ -11,6 +11,7 @@ from freesurfer_volume_reader.ashs import (
     HippocampalSubfieldsVolumeFile,
 )
 
+# pylint: disable=wrong-import-order; false positive
 from conftest import SUBJECTS_DIR, assert_volume_frames_equal
 
 

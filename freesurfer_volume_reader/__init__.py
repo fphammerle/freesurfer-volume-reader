@@ -40,7 +40,7 @@ def remove_group_names_from_regex(regex_pattern: str) -> str:
 
 class VolumeFile(metaclass=abc.ABCMeta):
 
-    FILENAME_REGEX = NotImplemented  # type: typing.Pattern[str]
+    FILENAME_REGEX: typing.Pattern[str] = NotImplemented
 
     @abc.abstractmethod
     def __init__(self, path: str) -> None:
