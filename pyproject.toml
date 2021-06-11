@@ -1,0 +1,4 @@
+# https://setuptools.readthedocs.io/en/latest/build_meta.html
+[build-system]
+requires = ["setuptools", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
