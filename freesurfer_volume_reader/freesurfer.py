@@ -11,7 +11,7 @@ https://github.com/freesurfer/freesurfer/tree/release_6_0_0/HippoSF
 >>>     print(volume_file.read_volumes_dataframe())
 """
 
-import os
+import pathlib
 import re
 import typing
 
@@ -32,10 +32,10 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
     FILENAME_HEMISPHERE_PREFIX_MAP = {"l": "left", "r": "right"}
 
     def __init__(self, path: str):
-        self._absolute_path = os.path.abspath(path)
-        subject_dir_path = os.path.dirname(os.path.dirname(self._absolute_path))
-        self.subject = os.path.basename(subject_dir_path)
-        filename_match = self.FILENAME_REGEX.match(os.path.basename(path))
+        self._absolute_path = pathlib.Path(path).absolute()
+        subject_dir_path = self._absolute_path.parent.parent
+        self.subject = subject_dir_path.name
+        filename_match = self.FILENAME_REGEX.match(self._absolute_path.name)
         assert filename_match, self._absolute_path
         filename_groups = filename_match.groupdict()
         assert (
@@ -48,16 +48,15 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
 
     @property
     def absolute_path(self):
-        return self._absolute_path
+        return str(self._absolute_path)
 
     def read_volumes_mm3(self) -> typing.Dict[str, float]:
         subfield_volumes = {}
-        with open(self.absolute_path, "r") as volume_file:
-            for line in volume_file.read().rstrip().split("\n"):
-                # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L8
-                # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L1946
-                subfield_name, subfield_volume_mm3_str = line.split(" ")
-                subfield_volumes[subfield_name] = float(subfield_volume_mm3_str)
+        for line in self._absolute_path.read_text().rstrip().split("\n"):
+            # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L8
+            # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L1946
+            subfield_name, subfield_volume_mm3_str = line.split(" ")
+            subfield_volumes[subfield_name] = float(subfield_volume_mm3_str)
         return subfield_volumes
 
     def read_volumes_dataframe(self) -> pandas.DataFrame:
