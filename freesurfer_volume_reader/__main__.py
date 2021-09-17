@@ -49,8 +49,8 @@ def main():
     )
     for source_type, file_class in VOLUME_FILE_FINDERS.items():
         argparser.add_argument(
-            "--{}-filename-regex".format(source_type),
-            dest="filename_regex.{}".format(source_type),
+            f"--{source_type}-filename-regex",
+            dest=f"filename_regex.{source_type}",
             metavar="REGULAR_EXPRESSION",
             type=re.compile,
             default=remove_group_names_from_regex(file_class.FILENAME_PATTERN),
@@ -65,7 +65,7 @@ def main():
         metavar="ROOT_DIR",
         nargs="*" if subjects_dir_path else "+",
         default=[subjects_dir_path],
-        help="default: $SUBJECTS_DIR ({})".format(subjects_dir_path),
+        help=f"default: $SUBJECTS_DIR ({subjects_dir_path})",
     )
     argparser.add_argument("--version", action="version", version=__version__)
     args = argparser.parse_args()
