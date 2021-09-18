@@ -43,7 +43,9 @@ class IntracranialVolumeFile(freesurfer_volume_reader.VolumeFile):
         return str(self._absolute_path)
 
     def read_volume_mm3(self) -> float:
-        subject, icv = self._absolute_path.read_text().rstrip().split(" ")
+        subject, icv = (
+            self._absolute_path.read_text(encoding="ascii").rstrip().split(" ")
+        )
         assert subject == self.subject, (subject, self.subject)
         return float(icv)
 
@@ -80,7 +82,9 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
 
     def read_volumes_mm3(self) -> typing.Dict[str, float]:
         subfield_volumes = {}
-        for line in self._absolute_path.read_text().rstrip().split("\n"):
+        for line in (
+            self._absolute_path.read_text(encoding="ascii").rstrip().split("\n")
+        ):
             # > echo $ASHS_SUBJID $side $SUB $NBODY $VSUB >> $FNBODYVOL
             # https://github.com/pyushkevich/ashs/blob/515ff7c2f50928adabc4e64bded9a7e76fc750b1/bin/ashs_extractstats_qsub.sh#L94
             (
