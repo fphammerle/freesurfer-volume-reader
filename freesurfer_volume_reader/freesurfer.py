@@ -52,7 +52,9 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
 
     def read_volumes_mm3(self) -> typing.Dict[str, float]:
         subfield_volumes = {}
-        for line in self._absolute_path.read_text().rstrip().split("\n"):
+        for line in (
+            self._absolute_path.read_text(encoding="ascii").rstrip().split("\n")
+        ):
             # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L8
             # https://github.com/freesurfer/freesurfer/blob/release_6_0_0/HippoSF/src/segmentSubjectT1T2_autoEstimateAlveusML.m#L1946
             subfield_name, subfield_volume_mm3_str = line.split(" ")
