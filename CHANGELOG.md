@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - compatibility with `python3.5`
+- examples: drop compatibility with `python3.6`
 
 ## [2.1.1] - 2021-06-11
 ### Fixed
