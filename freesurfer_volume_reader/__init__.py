@@ -19,6 +19,7 @@ import abc
 import os
 import re
 import typing
+import warnings
 
 import pandas
 
@@ -31,6 +32,9 @@ except ImportError:  # pragma: no cover
 def parse_version_string(
     version_string: str,
 ) -> typing.Tuple[typing.Union[int, str], ...]:
+    warnings.warn(  # previously used in `__main__.concat_dataframes`
+        "function `parse_version_string` is deprecated"
+    )
     return tuple(int(p) if p.isdigit() else p for p in version_string.split("."))
 
 

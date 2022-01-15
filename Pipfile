@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 freesurfer-volume-reader = {editable = true, path = "."}
 
-# python3.6 compatibility
-numpy = "<1.20"
+# python3.7 compatibility
+numpy = "<1.22"
 
 [dev-packages]
 black = "==20.8b1"

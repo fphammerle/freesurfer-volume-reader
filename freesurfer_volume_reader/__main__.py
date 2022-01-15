@@ -7,7 +7,6 @@ import argparse
 import os
 import re
 import sys
-import typing
 
 import pandas
 
@@ -15,19 +14,8 @@ from freesurfer_volume_reader import (
     __version__,
     ashs,
     freesurfer,
-    parse_version_string,
     remove_group_names_from_regex,
 )
-
-
-def concat_dataframes(
-    dataframes: typing.Iterable[pandas.DataFrame],
-) -> pandas.DataFrame:  # pragma: no cover
-    # pylint: disable=unexpected-keyword-arg
-    if parse_version_string(pandas.__version__) < (0, 23):
-        return pandas.concat(dataframes, ignore_index=True)
-    return pandas.concat(dataframes, ignore_index=True, sort=False)
-
 
 VOLUME_FILE_FINDERS = {
     "ashs": ashs.HippocampalSubfieldsVolumeFile,
@@ -91,7 +79,7 @@ def main():
             file=sys.stderr,
         )
         return os.EX_NOINPUT
-    united_volume_frame = concat_dataframes(volume_frames)
+    united_volume_frame = pandas.concat(volume_frames, ignore_index=True, sort=False)
     print(united_volume_frame.to_csv(index=False))
     return os.EX_OK
 

@@ -34,7 +34,6 @@ setuptools.setup(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Healthcare Industry",
         "Intended Audience :: Science/Research",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -48,10 +47,11 @@ setuptools.setup(
             "freesurfer-volume-reader = freesurfer_volume_reader.__main__:main"
         ]
     },
-    python_requires=">=3.6",
+    python_requires=">=3.7",  # python<3.7 untested
     install_requires=[
         # >=0.21.0 pandas.DataFrame.drop(columns=[...], ...)
-        "pandas>=0.21.0,<2"
+        # <0.23 untested
+        "pandas>=0.23.0,<2"
     ],
     setup_requires=["setuptools_scm"],
     tests_require=["pytest<5", "pytest-timeout<2"],

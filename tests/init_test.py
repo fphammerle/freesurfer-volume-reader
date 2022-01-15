@@ -3,11 +3,11 @@
 import pytest
 
 from freesurfer_volume_reader import (
+    SubfieldVolumeFile,
+    VolumeFile,
     __version__,
     parse_version_string,
     remove_group_names_from_regex,
-    VolumeFile,
-    SubfieldVolumeFile,
 )
 
 
@@ -15,6 +15,7 @@ def test_module_version():
     assert len(__version__) >= len("0.1.0")
 
 
+@pytest.mark.filterwarnings("ignore:function `parse_version_string` is deprecated")
 @pytest.mark.parametrize(
     ("version_string", "expected_tuple"),
     [
@@ -27,6 +28,7 @@ def test_parse_version_string(version_string, expected_tuple):
     assert expected_tuple == parse_version_string(version_string)
 
 
+@pytest.mark.filterwarnings("ignore:function `parse_version_string` is deprecated")
 def test_parse_version_string_comparison():
     assert parse_version_string("0.24.2") == (0, 24, 2)
     assert parse_version_string("0.24.2") < (0, 25)

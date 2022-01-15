@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - added `pyproject.toml` to specify build dependencies & build backend
 
+### Deprecated
+- `freesurfer_volume_reader.parse_version_string`
+
 ### Removed
-- compatibility with `python3.5`
-- examples: drop compatibility with `python3.6`
+- compatibility with `python3.5`, `python3.6` & `pandas<0.23`
 
 ## [2.1.1] - 2021-06-11
 ### Fixed
