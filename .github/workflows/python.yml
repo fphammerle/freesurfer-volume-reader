@@ -77,6 +77,9 @@ jobs:
     - run: pip install --upgrade pipenv==2020.8.13
     # by default pipenv picks the latest version in PATH
     - run: pipenv --python "$(which python)" install --deploy --dev
+    # > TypeError: Cannot interpret '<attribute 'dtype' of 'numpy.generic' objects>' as a data type
+    - run: pipenv run pip install numpy==1.19.5
+      if: startsWith(matrix.pandas-version, '0.')
     # `pipenv install --selective-upgrade "pandas==$PANDAS_VERSION"` was not effective
     - run: '[ -z "$PANDAS_VERSION" ] || pipenv run pip install "pandas==$PANDAS_VERSION"'
       env:
