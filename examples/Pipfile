@@ -12,5 +12,25 @@ notebook = "*"
 # nbconvert v6.0.2 made `;` suffix on last line ineffective
 nbconvert = "<6.0.2"
 
+# python3.7 compatibility
+ipython = "<8"
+numpy = "<1.22"
+
+# python<=3.8 compatibility
+# >   File "[...]/python3.8/site-packages/jsonschema/_utils.py", line 12, in <module>
+# >     import importlib_resources as resources  # type: ignore
+# > ModuleNotFoundError: No module named 'importlib_resources'
+importlib-resources = {markers = "python_version <= '3.8'"}
+# >   File "[...]/python3.8/site-packages/importlib_resources/_compat.py", line 11, in <module>
+# >     from zipp import Path as ZipPath  # type: ignore
+# > ModuleNotFoundError: No module named 'zipp'
+zipp = {markers = "python_version <= '3.8'"}
+
+# python3.10 compatibility
+# >   File "[...]/lib/python3.10/site-packages/mypy/main.py", line 11, in <module>
+# >     from typing_extensions import Final, NoReturn
+# > ModuleNotFoundError: No module named 'typing_extensions'
+typing-extensions = {markers = ""}
+
 [requires]
 python_version = "3"
