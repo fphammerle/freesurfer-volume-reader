@@ -21,6 +21,7 @@ numpy = "<1.22"
 # >     import importlib_resources as resources  # type: ignore
 # > ModuleNotFoundError: No module named 'importlib_resources'
 importlib-resources = {markers = "python_version <= '3.8'"}
+scipy = "<1.8"
 # >   File "[...]/python3.8/site-packages/importlib_resources/_compat.py", line 11, in <module>
 # >     from zipp import Path as ZipPath  # type: ignore
 # > ModuleNotFoundError: No module named 'zipp'
