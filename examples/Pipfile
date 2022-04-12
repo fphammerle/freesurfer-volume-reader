@@ -33,5 +33,10 @@ zipp = {markers = "python_version <= '3.8'"}
 # > ModuleNotFoundError: No module named 'typing_extensions'
 typing-extensions = {markers = ""}
 
+# > File "[...]/python3.9/site-packages/nbconvert/exporters/html.py", line 14, in <module>
+# >  from jinja2 import contextfilter
+# https://github.com/jupyter/nbconvert/issues/1742
+jinja2 = "<3.1"
+
 [requires]
 python_version = "3"
