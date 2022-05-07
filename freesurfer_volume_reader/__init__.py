@@ -17,6 +17,7 @@ https://surfer.nmr.mgh.harvard.edu/fswiki/HippocampalSubfields
 
 import abc
 import os
+import pathlib
 import re
 import typing
 import warnings
@@ -48,12 +49,11 @@ class VolumeFile(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def __init__(self, path: str) -> None:
-        pass
+        self._absolute_path = pathlib.Path(path).absolute()
 
     @property
-    @abc.abstractmethod
-    def absolute_path(self):
-        raise NotImplementedError()
+    def absolute_path(self) -> str:
+        return str(self._absolute_path)
 
     @classmethod
     def find(

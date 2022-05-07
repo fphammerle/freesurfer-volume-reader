@@ -54,22 +54,20 @@ def test_remove_group_names_from_regex(source_pattern, expected_pattern):
     )
 
 
+def test_volume_file_abstract():
+    with pytest.raises(
+        TypeError,
+        match=r"^Can't instantiate abstract class VolumeFile with abstract methods? __init__$",
+    ):
+        VolumeFile(path="/tmp/test")  # pylint: disable=abstract-class-instantiated
+
+
 class DummyVolumeFile(VolumeFile):
 
     # pylint: disable=useless-super-delegation
 
     def __init__(self, path: str) -> None:
         super().__init__(path=path)
-
-    @property
-    def absolute_path(self):
-        return super().absolute_path
-
-
-def test_volume_file_abstractmethod():
-    volume_file = DummyVolumeFile(path="dummy")
-    with pytest.raises(NotImplementedError):
-        assert volume_file.absolute_path
 
 
 class DummySubfieldVolumeFile(SubfieldVolumeFile):
@@ -78,10 +76,6 @@ class DummySubfieldVolumeFile(SubfieldVolumeFile):
 
     def __init__(self, path: str) -> None:
         super().__init__(path=path)
-
-    @property
-    def absolute_path(self):
-        return super().absolute_path
 
     def read_volumes_mm3(self):
         return super().read_volumes_mm3()
@@ -92,8 +86,6 @@ class DummySubfieldVolumeFile(SubfieldVolumeFile):
 
 def test_subfield_volume_file_abstractmethod():
     volume_file = DummySubfieldVolumeFile(path="subfield-dummy")
-    with pytest.raises(NotImplementedError):
-        assert volume_file.absolute_path
     with pytest.raises(NotImplementedError):
         volume_file.read_volumes_mm3()
     with pytest.raises(NotImplementedError):

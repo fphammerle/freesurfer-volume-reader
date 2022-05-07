@@ -18,7 +18,6 @@ https://sites.google.com/site/hipposubfields/home
 >>>     print(volume_file.read_volume_series())
 """
 
-import pathlib
 import re
 import typing
 
@@ -32,15 +31,10 @@ class IntracranialVolumeFile(freesurfer_volume_reader.VolumeFile):
     FILENAME_REGEX = re.compile(r"^(?P<s>\w+)_icv.txt$")
 
     def __init__(self, path: str):
-        self._absolute_path = pathlib.Path(path).absolute()
+        super().__init__(path=path)
         filename_match = self.FILENAME_REGEX.match(self._absolute_path.name)
         assert filename_match, self._absolute_path
         self.subject = filename_match.groupdict()["s"]
-        super().__init__(path=path)
-
-    @property
-    def absolute_path(self):
-        return str(self._absolute_path)
 
     def read_volume_mm3(self) -> float:
         subject, icv = (
@@ -67,18 +61,13 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
     FILENAME_REGEX = re.compile(FILENAME_PATTERN)
 
     def __init__(self, path: str):
-        self._absolute_path = pathlib.Path(path).absolute()
+        super().__init__(path=path)
         filename_match = self.FILENAME_REGEX.match(self._absolute_path.name)
         assert filename_match, self._absolute_path
         filename_groups = filename_match.groupdict()
         self.subject = filename_groups["s"]
         self.hemisphere = filename_groups["h"]
         self.correction = filename_groups["c"]
-        super().__init__(path=path)
-
-    @property
-    def absolute_path(self):
-        return str(self._absolute_path)
 
     def read_volumes_mm3(self) -> typing.Dict[str, float]:
         subfield_volumes = {}

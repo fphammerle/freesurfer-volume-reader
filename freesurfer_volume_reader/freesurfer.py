@@ -11,7 +11,6 @@ https://github.com/freesurfer/freesurfer/tree/release_6_0_0/HippoSF
 >>>     print(volume_file.read_volumes_dataframe())
 """
 
-import pathlib
 import re
 import typing
 
@@ -32,7 +31,7 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
     FILENAME_HEMISPHERE_PREFIX_MAP = {"l": "left", "r": "right"}
 
     def __init__(self, path: str):
-        self._absolute_path = pathlib.Path(path).absolute()
+        super().__init__(path=path)
         subject_dir_path = self._absolute_path.parent.parent
         self.subject = subject_dir_path.name
         filename_match = self.FILENAME_REGEX.match(self._absolute_path.name)
@@ -44,11 +43,6 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
         self.hemisphere = self.FILENAME_HEMISPHERE_PREFIX_MAP[filename_groups["h"]]
         self.t1_input = filename_groups["T1"] is not None
         self.analysis_id = filename_groups["analysis_id"]
-        super().__init__(path=path)
-
-    @property
-    def absolute_path(self):
-        return str(self._absolute_path)
 
     def read_volumes_mm3(self) -> typing.Dict[str, float]:
         subfield_volumes = {}
