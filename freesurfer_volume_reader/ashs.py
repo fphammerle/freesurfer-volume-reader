@@ -91,6 +91,7 @@ class HippocampalSubfieldsVolumeFile(freesurfer_volume_reader.SubfieldVolumeFile
 
     def read_volumes_dataframe(self) -> pandas.DataFrame:
         volumes_frame = self._read_volume_series().reset_index()
+        # pylint: disable=duplicate-code; software-specific
         volumes_frame["subject"] = self.subject
         volumes_frame["hemisphere"] = self.hemisphere
         volumes_frame["correction"] = self.correction
