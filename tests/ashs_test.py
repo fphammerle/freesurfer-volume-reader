@@ -256,7 +256,7 @@ def test_hippocampal_subfields_volume_file_init(volume_file_path, expected_attrs
     ],
 )
 def test_hippocampal_subfields_volume_file_init_invalid(volume_file_path):
-    with pytest.raises(Exception):
+    with pytest.raises(Exception):  # pylint: disable=duplicate-code; freesurfer tests
         HippocampalSubfieldsVolumeFile(path=volume_file_path)
 
 

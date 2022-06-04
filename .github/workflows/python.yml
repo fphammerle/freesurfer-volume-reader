@@ -96,11 +96,7 @@ jobs:
     - run: pipenv graph
     - run: pipenv run pytest --cov="$(cat *.egg-info/top_level.txt)" --cov-report=term-missing --cov-fail-under=100
     - run: pipenv run pylint --load-plugins=pylint_import_requirements "$(cat *.egg-info/top_level.txt)"
-    # https://github.com/PyCQA/pylint/issues/352
-    # disable parse-error due to:
-    # > tests/resources/__init__.py:1:0: F0010: error while code parsing: Unable to load file tests/resources/__init__.py:
-    # > [Errno 2] No such file or directory: 'tests/resources/__init__.py' (parse-error)
-    - run: pipenv run pylint --disable=parse-error tests/*
+    - run: pipenv run pylint tests
     - run: pipenv run mypy "$(cat *.egg-info/top_level.txt)" tests
     # >=2.1.0 to support GITHUB_TOKEN
     # COVERALLS_REPO_TOKEN required manual configuration of secret
