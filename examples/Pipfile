@@ -10,7 +10,7 @@ matplotlib = "*"
 seaborn = "*"
 notebook = "*"
 # nbconvert v6.0.2 made `;` suffix on last line ineffective
-nbconvert = "<6.3.1"
+nbconvert = "!=6.0.2"
 
 # python3.7 compatibility
 ipython = "<8"
