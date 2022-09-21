@@ -96,6 +96,14 @@ jobs:
     - run: pipenv graph
     - run: pipenv run pytest --cov="$(cat *.egg-info/top_level.txt)" --cov-report=term-missing --cov-fail-under=100
     - run: pipenv run pylint --load-plugins=pylint_import_requirements "$(cat *.egg-info/top_level.txt)"
+    # workaround pylint reporting:
+    # > E0401: Unable to import 'ical2vdir' (import-error)
+    # pyproject.toml broken?
+    - run: >-
+        printenv GITHUB_WORKSPACE
+        | tee "$(pipenv --venv)/lib/python${PYTHON_VERSION}/site-packages/easy-install.pth"
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
     - run: pipenv run pylint tests
     - run: pipenv run mypy "$(cat *.egg-info/top_level.txt)" tests
     # >=2.1.0 to support GITHUB_TOKEN
