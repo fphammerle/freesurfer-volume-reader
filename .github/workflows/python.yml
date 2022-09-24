@@ -85,7 +85,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - run: pip install --upgrade pipenv==2022.9.21
     # by default pipenv picks the latest version in PATH
-    - run: pipenv --python "$(which python)" install --deploy --dev
+    - run: pipenv install --python "$PYTHON_VERSION" --deploy --dev
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
     # > TypeError: Cannot interpret '<attribute 'dtype' of 'numpy.generic' objects>' as a data type
     - run: pipenv run pip install numpy==1.19.5
       if: startsWith(matrix.pandas-version, '0.')
@@ -97,7 +99,7 @@ jobs:
     - run: pipenv run pytest --cov="$(cat *.egg-info/top_level.txt)" --cov-report=term-missing --cov-fail-under=100
     - run: pipenv run pylint --load-plugins=pylint_import_requirements "$(cat *.egg-info/top_level.txt)"
     # workaround pylint reporting:
-    # > E0401: Unable to import 'ical2vdir' (import-error)
+    # > E0401: Unable to import 'freesurer_volume_reader' (import-error)
     # pyproject.toml broken?
     - run: >-
         printenv GITHUB_WORKSPACE
@@ -115,6 +117,17 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # https://github.com/TheKevJames/coveralls-python/issues/240#issuecomment-758336355
         COVERALLS_SERVICE_NAME: github
+  install:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with: {python-version: 3.9}
+    - run: '! freesurfer-volume-reader --help'
+    - run: pip install wheel==0.37.1
+    - run: python setup.py bdist_wheel
+    - run: pip install dist/*.whl
+    - run: freesurfer-volume-reader --help
   test-examples: # sync with https://github.com/fphammerle/freesurfer-surface/blob/dev/.github/workflows/python.yml#L73
     runs-on: ubuntu-18.04
     strategy:
