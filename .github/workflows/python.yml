@@ -129,7 +129,7 @@ jobs:
     - run: pip install dist/*.whl
     - run: freesurfer-volume-reader --help
   test-examples: # sync with https://github.com/fphammerle/freesurfer-surface/blob/dev/.github/workflows/python.yml#L73
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version:
